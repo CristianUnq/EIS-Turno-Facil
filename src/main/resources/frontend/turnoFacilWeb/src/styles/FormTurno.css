@@ -1,0 +1,44 @@
+.form-turno {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f8f8f8;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-turno h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-turno label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+.form-turno input,
+.form-turno select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-turno button {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-turno button:hover {
+  background-color: #0056b3;
+}
