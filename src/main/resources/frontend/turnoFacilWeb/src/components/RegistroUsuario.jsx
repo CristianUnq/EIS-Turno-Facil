@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import styles from "../styles/registroUsuario.module.css";
+import { Info } from 'lucide-react';
+import Header from './Header';
 
 const RegistroUsuario = () => {
   const [formulario, setFormulario] = useState({
     nombre: '',
-    direccion: '',
+    apellido:'',
+    dni:'',
     telefono: '',
     email: '',
     contrasenia: '',
@@ -38,34 +42,44 @@ const RegistroUsuario = () => {
   };
 
   return (
-    <div >
-      <h2 >Registro de Usuario</h2>
-      <form onSubmit={handleSubmit} >
-        
-        <label htmlFor="nombre">Nombres:</label>
-        <input type="text" id="nombre" name="nombre" value={formulario.nombre} onChange={handleChange} required />
+    <div>
+          <Header/>
 
-        <label htmlFor="direccion">Dirección:</label>
-        <input type="text" id="direccion" name="direccion" value={formulario.direccion} onChange={handleChange} required />
+      <div className={styles.formContainer}>
+            <div className={styles.avatar}> <img src="/avatar.svg" alt="Avatar" className={styles.avatar} />
+            </div>
+            <h2 className={styles.title}>Registro de usuario</h2>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <div className={styles.row}>
+                    <input type="text" placeholder="Nombres" id="nombre" name="nombre" value={formulario.nombre} onChange={handleChange} required />
+                    <input type="text" placeholder="Apellidos" id="apellido" name="apellido" value={formulario.apellido} onChange={handleChange} required />
+                </div>
+                <div className={styles.row}>
+                    <input type="text" placeholder="Número de DNI" id="dni" name="dni" value={formulario.dni} onChange={handleChange} required />
+                    <input type="text" placeholder="Teléfono de contacto" id="telefono" name="telefono" value={formulario.telefono} onChange={handleChange} required />
+                </div>
+{/*                 <div className={styles.row}> */}
+{/*                     <input type="text" id="direccion" name="direccion" value={formulario.direccion} onChange={handleChange} required /> */}
+{/*                 </div> */}
 
-        <label htmlFor="telefono">Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono" value={formulario.telefono} onChange={handleChange} required />
+                <div className={styles.row}>
+                     <input type="email" placeholder="Correo electrónico" id="email" name="email" value={formulario.email} onChange={handleChange} required />
+                </div>
 
-        <label htmlFor="correo">Correo Electrónico:</label>
-        <input type="email" id="email" name="email" value={formulario.email} onChange={handleChange} required />
-
-        <label htmlFor="contrasenia">contraseña:</label>
-        <input type="password" id="contrasenia" name="contrasenia" value={formulario.contrasenia} onChange={handleChange} required />
-
-        <label htmlFor="confirmarcontrasenia">Confirmar contraseña:</label>
-        <input type="password" id="confirmarcontrasenia" name="confirmarcontrasenia" value={formulario.confirmarcontrasenia} onChange={handleChange} required />
-
-        
-        
-
-        <button type="submit" >Guardar</button>
-      </form>
-    </div>
+                <div className={styles.passwordWrapper}>
+                     <input type="password" placeholder="Contraseña" id="contrasenia" name="contrasenia" value={formulario.contrasenia} onChange={handleChange} required />
+                    <div className={styles.tooltipContainer}>
+                        <Info className={styles.infoIcon} />
+                            <div className={styles.tooltipText}>
+                                La contraseña debe tener al menos 8 caracteres, 1 mayúscula, 1 minúscula, 1 número y 1 carácter especial.
+                            </div>
+                    </div>
+                </div>
+                <input type="password" placeholder="Contraseña" id="confirmarcontrasenia" name="confirmarcontrasenia" value={formulario.confirmarcontrasenia} onChange={handleChange} required />
+                <button type="submit" className={styles.button}>Guardar</button>
+            </form>
+        </div>
+        </div>
   );
 };
 

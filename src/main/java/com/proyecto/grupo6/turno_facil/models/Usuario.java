@@ -3,7 +3,7 @@ package com.proyecto.grupo6.turno_facil.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "usuarios")
+@Table(name = "Usuario")
 public class Usuario {
 
     @Id
@@ -12,11 +12,15 @@ public class Usuario {
 
     private String nombre;
 
+    private String apellido;
+
     private String nombreNegocio;
+
+    private String dni;
 
     private String direccion;
 
-    private Integer telefono;
+    private String telefono;
 
     private String email;
 
@@ -42,12 +46,28 @@ public class Usuario {
         this.nombre = nombre;
     }
 
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
     public String getNombreNegocio() {
         return nombreNegocio;
     }
 
     public void setNombreNegocio(String nombreNegocio) {
         this.nombreNegocio = nombreNegocio;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
     }
 
     public String getDireccion() {
@@ -66,11 +86,11 @@ public class Usuario {
         this.email = email;
     }
 
-    public Integer getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(Integer telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 

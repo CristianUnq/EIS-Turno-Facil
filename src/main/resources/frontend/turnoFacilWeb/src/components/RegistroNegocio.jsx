@@ -1,84 +1,121 @@
 import React, { useState } from 'react';
-
+import Header from './Header';
+import styles from '../styles/registroNegocio.module.css';
+import { Info } from 'lucide-react';
 
 const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 const horarios = ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
 
 const RegistroNegocio = () => {
   const [formulario, setFormulario] = useState({
-    nombre: '',
+    nombreNegocio: '',
     direccion: '',
     telefono: '',
-    correo: '',
-    contraseña: '',
-    confirmarContraseña: '',
+    email: '',
+    contrasenia: '',
+    confirmarContrasenia: '',
     duracionTurno: '',
     diaDesde: 'Lunes',
     diaHasta: 'Viernes',
     horaDesde: '08:00',
     horaHasta: '18:00'
   });
+ const [horariosGuardados, setHorariosGuardados] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormulario({ ...formulario, [name]: value });
   };
 
+  const prepararParaEnvio = (formulario) => {
+    const {diaDesde, diaHasta, horaDesde, horaHasta, confirmarContrasenia, ...restoDelFormulario } = formulario;
+    const diasAtencion =  {diaDesde, diaHasta, horaDesde, horaHasta};
+    const diasDeAtencion = JSON.stringify(diasAtencion);
+    const datosParaEnviar = {
+      ...restoDelFormulario,
+      diasDeAtencion
+    };
+    
+    return datosParaEnviar;
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formulario.contraseña !== formulario.confirmarContraseña) {
+    if (formulario.contrasenia !== formulario.confirmarContrasenia) {
       alert("Las contraseñas no coinciden");
       return;
     }
-    console.log("Datos del negocio:", formulario);
-  };
+    const datos = prepararParaEnvio(formulario);
+    fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(datos)
+    })
+    .then(res => {
+      if (res.ok) return res.text();
+      throw new Error("Registro fallido");
+    })
+    .then(msg => alert("✅ " + msg))
+    .catch(err => alert("❌ " + err.message));
+  }
+
+  const handleGuardar = () => {
+      const dias = `${formulario.diaDesde} a ${formulario.diaHasta}`;
+      const horas = `${formulario.horaDesde} a ${formulario.horaHasta}`;
+      setHorariosGuardados({ días: dias, horas: horas });
+    };
 
   return (
-    <div >
-      <h2 >Registro de Negocio</h2>
-      <form onSubmit={handleSubmit} >
-        
-        <label htmlFor="nombre">Nombre del Negocio:</label>
-        <input type="text" id="nombre" name="nombre" value={formulario.nombre} onChange={handleChange} required />
+    <div className={styles.container}>
+          <Header />
+          <div className={styles.formBox}>
+          <div className={styles.avatar}> <img src="/avatar.svg" alt="Avatar" className={styles.avatar} /></div>
+          <h2 className={styles.title}>Registro de Negocio</h2>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <div className={styles.column}>
 
-        <label htmlFor="direccion">Dirección:</label>
-        <input type="text" id="direccion" name="direccion" value={formulario.direccion} onChange={handleChange} required />
+        <input type="text" placeholder="Nombre del negocio" id="nombreNegocio" name="nombreNegocio" value={formulario.nombreNegocio} onChange={handleChange} required />
+        <input type="text" id="direccion" placeholder="Dirección" name="direccion" value={formulario.direccion} onChange={handleChange} required />
+        <input type="tel" placeholder="Teléfono" id="telefono" name="telefono" value={formulario.telefono} onChange={handleChange} required />
+        <input type="email" placeholder="Correo electrónico" id="email" name="email" value={formulario.email} onChange={handleChange} required />
+        <input type="password" placeholder="Contraseña" id="contrasenia" name="contrasenia" value={formulario.contrasenia} onChange={handleChange} required />
+        <input type="password" placeholder="Contraseña" id="confirmarContrasenia" name="confirmarContrasenia" value={formulario.confirmarContrasenia} onChange={handleChange} required />
+    </div>
+    <div className={styles.column}>
+            <input type="number" placeholder="Duración del turno (minutos)" id="duracionTurno" name="duracionTurno" value={formulario.duracionTurno} onChange={handleChange} required />
 
-        <label htmlFor="telefono">Teléfono:</label>
-        <input type="tel" id="telefono" name="telefono" value={formulario.telefono} onChange={handleChange} required />
+       <div className={styles.selectGroup}>
+                     <label>Día desde:</label>
 
-        <label htmlFor="correo">Correo Electrónico:</label>
-        <input type="email" id="correo" name="correo" value={formulario.correo} onChange={handleChange} required />
-
-        <label htmlFor="contraseña">Contraseña:</label>
-        <input type="password" id="contraseña" name="contraseña" value={formulario.contraseña} onChange={handleChange} required />
-
-        <label htmlFor="confirmarContraseña">Confirmar Contraseña:</label>
-        <input type="password" id="confirmarContraseña" name="confirmarContraseña" value={formulario.confirmarContraseña} onChange={handleChange} required />
-
-        <label htmlFor="duracionTurno">Duración de cada turno (en minutos):</label>
-        <input type="number" id="duracionTurno" name="duracionTurno" value={formulario.duracionTurno} onChange={handleChange} required />
-
-        <label htmlFor="diaDesde">Días de Atención:</label>
-        <div style={{ display: 'flex', gap: '1rem' }}>
           <select id="diaDesde" name="diaDesde" value={formulario.diaDesde} onChange={handleChange}>
-            {diasSemana.map(dia => <option key={dia}>{dia}</option>)}
+            {diasSemana.map((dia, index) => <option key={dia}>{dia}</option>)}
           </select>
-          <span>hasta</span>
+        </div>
+        <div className={styles.selectGroup}>
+           <label>Día hasta:</label>
           <select id="diaHasta" name="diaHasta" value={formulario.diaHasta} onChange={handleChange}>
-            {diasSemana.map(dia => <option key={dia}>{dia}</option>)}
+            {diasSemana.map((dia, index) => <option key={dia}>{dia}</option>)}
           </select>
         </div>
 
-        <label htmlFor="horaDesde">Horario de Atención:</label>
-        <div style={{ display: 'flex', gap: '1rem' }}>
+
+        <div className={styles.selectGroup}>
+              <label>Hora desde:</label>
           <select id="horaDesde" name="horaDesde" value={formulario.horaDesde} onChange={handleChange}>
-            {horarios.map(hora => <option key={hora}>{hora}</option>)}
+            {horarios.map((hora, index) => <option key={hora}>{hora}</option>)}
           </select>
-          <span>hasta</span>
+        </div>
+        <div className={styles.selectGroup}>
+                        <label>Hora hasta:</label>
           <select id="horaHasta" name="horaHasta" value={formulario.horaHasta} onChange={handleChange}>
-            {horarios.map(hora => <option key={hora}>{hora}</option>)}
+            {horarios.map((hora, index) => <option key={hora}>{hora}</option>)}
           </select>
+            <div className={styles.tooltipContainer}>
+                      <Info className={styles.infoIcon} />
+                      <div className={styles.tooltipText}>
+                      </div>
+            </div> 
         </div>
 
         <div >
@@ -89,7 +126,21 @@ const RegistroNegocio = () => {
         </div>
 
         <button type="submit" >Guardar</button>
+{/*  A PARTIR DE ACA, ESTA SEGUN EL HANDLEGUARDAR QUE HICE, PODES REEMPLAZARLO O ARREGLARLO COMO QUIERAS
+       <button type="button" onClick={handleGuardar} className={styles.button}>Guardar</button>
+       {horariosGuardados && (
+                     <div className={styles.resumen}>
+                       <h4>Días y horarios seleccionados:</h4>
+                       <p>{horariosGuardados.días}</p>
+                       <p>{horariosGuardados.horas}</p>
+                     </div>
+                   )}*/}
+      </div>
       </form>
+       <div className={styles.centeredButtonBox}>
+                <button type="submit"className={styles.button}>Registrarme</button>
+              </div>
+            </div>
     </div>
   );
 };

@@ -1,9 +1,10 @@
 import React from 'react';
+import styles from '../styles/header.module.css';
 
 function Header() {
   return (
-    <header style={{ padding: '1rem', textAlign: 'center', background: '#007bff', color: 'white' }}>
-      <h1>turnoFacil</h1>
+    <header className={styles.header}>
+      <a href="/" className={styles.logo}>turnoFacil</a>
     </header>
   );
 }

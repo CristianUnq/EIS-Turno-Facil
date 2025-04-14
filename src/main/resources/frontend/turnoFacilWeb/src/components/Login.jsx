@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Header from './Header';
+import styles from '../styles/login.module.css'; // Asegurate de tener este archivo
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
@@ -15,9 +17,9 @@ function Login() {
       body: JSON.stringify({email: email, contrasenia: contrasenia})
     })
     .then(res => {
-      if (res.ok) { 
+      if (res.ok) {
         navigate('/turno');
-        return; 
+        return;
       };
       throw new Error("Credenciales incorrectas");
     })
@@ -25,28 +27,48 @@ function Login() {
     .catch(err => alert("❌ " + err.message));
   };
 
-  return (
-    <div className="login">
-      <h2>Iniciar sesión</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Email</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label>Contraseña</label>
-        <input
-          type="contrasenia"
-          value={contrasenia}
-          onChange={(e) => setcontrasenia(e.target.value)}
-          required
-        />
-        <button type="submit">Entrar</button>
-      </form>
-    </div>
-  );
-}
 
-export default Login;
+return (
+
+
+      <div >
+      <div>
+      <Header />
+      </div>
+        <div className={styles.loginContainer}>
+        <div className={styles.loginBox}>
+          <img src="/avatar.svg" alt="Avatar" className={styles.avatar} />
+          <h2 className={styles.title}>Inicio de sesión</h2>
+          <form onSubmit={handleSubmit} className={styles.form}>
+            <input
+              type="email"
+              placeholder="nombre de usuario"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="contrasenia"
+              placeholder="contraseña"
+              value={contrasenia}
+              onChange={(e) => setcontrasenia(e.target.value)}
+              required
+            />
+            <div className={styles.checkboxContainer}>
+              <input type="checkbox" id="remember" />
+              <label htmlFor="remember">Recordarme</label>
+            </div>
+            <button type="submit" className={styles.button}>Iniciar sesión</button>
+            <button type="submit" className={styles.button}>Registrarme</button>
+          </form>
+          <div className={styles.links}>
+            <a href="/registroUsuario">Registrarme</a>
+            <a href="/registroNegocio">Quiero ofrecer turnos</a>
+          </div>
+        </div>
+        </div>
+      </div>
+    );
+  }
+
+  export default Login;
