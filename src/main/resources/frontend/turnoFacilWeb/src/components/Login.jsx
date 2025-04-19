@@ -17,6 +17,7 @@ function Login() {
       body: JSON.stringify({email: email, contrasenia: contrasenia})
     })
     .then(res => {
+      console.log(res)
       if (res.ok) {
         navigate('/turno');
         return;

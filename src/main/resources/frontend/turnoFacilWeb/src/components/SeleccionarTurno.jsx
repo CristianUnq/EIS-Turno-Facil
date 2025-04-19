@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import FormTurno from './FormTurno';
+import Header from './Header';
 
 
+const SeleccionarTurno = () => {
 
-const SelectTurn = () => {
-  // const [selectedDate, setSelectedDate] = useState(new Date());
   return (
     <div>
-      <h2>Seleccionar Turno</h2>
-      
+        <Header />
+        <FormTurno />
     </div>
   );
 };
 
-export default SelectTurn;
+export default SeleccionarTurno;
