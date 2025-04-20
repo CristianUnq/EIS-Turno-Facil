@@ -22,6 +22,14 @@ public class Turno {
 
     private String emailNegocio;
 
+    public Turno(Long id, Date fecha, Time hora, String emailUsuario, String emailNegocio){
+        this.id=id;
+        this.fecha=fecha;
+        this.hora=hora;
+        this.emailUsuario=emailUsuario;
+        this.emailNegocio=emailNegocio;
+    }
+
     public Long getId() {
         return id;
     }

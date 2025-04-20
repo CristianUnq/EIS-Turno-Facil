@@ -2,15 +2,29 @@ import React, { useState, useEffect } from 'react';
 import '../styles/FormTurno.css';
 
 function FormTurno() {
-  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0])
-  const [negocioSeleccionado, setNegocioSeleccionado] = useState('');
+  const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date().toISOString().split('T')[0])
   const [horaSeleccionada, setHoraSeleccionada] = useState("");
+  const [negocioSeleccionado, setNegocioSeleccionado] = useState('');
   const [negocios, setNegocios] = useState(null);
   const [horariosDelNegocio, setHorariosDelNegocio] = useState([])
 
- const handleSubmit = (e) => {
-    e.preventDefault();
-    //alert(`Turno solicitado:\nNombre: ${nombre}\nEmail: ${email}\nFecha: ${fecha}\nEspecialidad: ${especialidad}`);
+  const handleSubmit =  async (e) => {
+    await fetch("/api/auth/sacarTurno", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({usuario: localStorage.getItem('usuario'), negocio: negocioSeleccionado, fecha:fechaSeleccionada, horaTurno:horaSeleccionada})
+    })
+    .then(res => {
+      if (res.ok) {
+        alert("✅ " + "lito");
+        return
+      };
+      // throw new Error("Credenciales incorrectas");
+    })
+    //.then(msg => alert("✅ " + msg))
+    .catch(err => alert("❌ " + err.message));
+      //alert(`Turno solicitado:\nNombre: ${nombre}\nEmail: ${email}\nFecha: ${fecha}\nEspecialidad: ${especialidad}`);
   };
 
   const generateHorariosDisponibles = (horaDesde, horaHasta, intervaloMinutos = 60) => {
@@ -18,7 +32,6 @@ function FormTurno() {
   
     const [desdeHoras, desdeMinutos] = horaDesde.split(":").map(Number);
     const [hastaHoras, hastaMinutos] = horaHasta.split(":").map(Number);
-  
     const inicio = new Date();
     inicio.setHours(desdeHoras, desdeMinutos, 0, 0);
   
@@ -50,11 +63,6 @@ function FormTurno() {
     let {horaDesde, horaHasta} = JSON.parse(negocioActual.diasDeAtencion);
     setHorariosDelNegocio(generateHorariosDisponibles(horaDesde, horaHasta, negocioActual.duracionTurno))
   } 
-
-  const handleSetFecha = (fecha) => {
-    setFecha(fecha);
-  }
-
   const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
 
   const estaEnRangoDeDias = (fecha) => {
@@ -81,6 +89,25 @@ function FormTurno() {
       return indiceActual >= indiceDesde || indiceActual <= indiceHasta;
     }
   }
+
+  const fechaFormateada = (fechaStr) => {
+    if (!fechaStr) return "";
+  
+    const fecha = new Date(fechaStr + "T00:00:00"); 
+    //const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+    const meses = [
+      "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+      "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ];
+  
+    const diaSemana = diasSemana[fecha.getDay()];
+    const dia = fecha.getDate();
+    const mes = meses[fecha.getMonth()];
+    const anio = fecha.getFullYear();
+  
+    return `${diaSemana} ${dia} de ${mes} del ${anio}`;
+  };
+  
 
   useEffect(() => {
     fetch("api/negocios", {
@@ -115,9 +142,9 @@ function FormTurno() {
       </select>
 
       <label>Fecha</label>
-      <input type="date" value={fecha} onChange={(e) => handleSetFecha(e.target.value)} required />
+      <input type="date" value={fechaSeleccionada} onChange={(e) => setFechaSeleccionada(e.target.value)} required />
 
-      <label>Elige el horario del turno para el xx dd de mm</label>
+      <label>Elige el horario del turno para el {fechaFormateada(fechaSeleccionada)} </label>
 
       {estaEnRangoDeDias(fecha)
       ?
