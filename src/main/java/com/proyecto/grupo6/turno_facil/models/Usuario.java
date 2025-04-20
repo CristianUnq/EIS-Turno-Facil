@@ -30,6 +30,8 @@ public class Usuario {
 
     private String diasDeAtencion;
 
+    private Boolean isNegocio;
+
     public Long getId() {
         return id;
     }
@@ -116,5 +118,11 @@ public class Usuario {
 
     public void setDiasDeAtencion(String diasDeAtencion) {
         this.diasDeAtencion = diasDeAtencion;
+    }
+
+    public Boolean isNegocio() { return isNegocio; }
+
+    public void setIsNegocio(Boolean isNegocio) {
+        this.isNegocio = isNegocio;
     }
 }

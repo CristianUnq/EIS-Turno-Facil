@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Header from './Header';
 import styles from '../styles/registroNegocio.module.css';
 import { Info } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 const horarios = ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
@@ -18,9 +19,12 @@ const RegistroNegocio = () => {
     diaDesde: 'Lunes',
     diaHasta: 'Viernes',
     horaDesde: '08:00',
-    horaHasta: '18:00'
+    horaHasta: '18:00',
+    isNegocio: true
   });
- const [horariosGuardados, setHorariosGuardados] = useState(null);
+  const [horariosGuardados, setHorariosGuardados] = useState(null);
+
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,7 +37,7 @@ const RegistroNegocio = () => {
     const diasDeAtencion = JSON.stringify(diasAtencion);
     const datosParaEnviar = {
       ...restoDelFormulario,
-      diasDeAtencion
+      diasDeAtencion,
     };
     
     return datosParaEnviar;
@@ -56,7 +60,10 @@ const RegistroNegocio = () => {
       if (res.ok) return res.text();
       throw new Error("Registro fallido");
     })
-    .then(msg => alert("✅ " + msg))
+    .then(msg => {
+      alert("✅ " + msg);
+      navigate("/login");
+    })
     .catch(err => alert("❌ " + err.message));
   }
 

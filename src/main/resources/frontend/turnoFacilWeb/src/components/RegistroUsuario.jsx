@@ -11,7 +11,8 @@ const RegistroUsuario = () => {
     telefono: '',
     email: '',
     contrasenia: '',
-    confirmarcontrasenia: ""
+    confirmarcontrasenia: '',
+    isNegocio: false
    });
 
   const handleChange = (e) => {
