@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import '../styles/FormTurno.css';
 
 function FormTurno() {
-  const [fecha, setFecha] = useState('');
+  const [fecha, setFecha] = useState(new Date().toISOString().split('T')[0])
   const [negocioSeleccionado, setNegocioSeleccionado] = useState('');
+  const [horaSeleccionada, setHoraSeleccionada] = useState("");
   const [negocios, setNegocios] = useState(null);
   const [horariosDelNegocio, setHorariosDelNegocio] = useState([])
 
@@ -40,7 +41,7 @@ function FormTurno() {
   }
   
   const getNegocio = (negocioNombre) => {
-    return negocios.find(n => n.nombreNegocio == negocioNombre)
+    return negocios?.find(n => n.nombreNegocio == negocioNombre)
   }
 
   const handleOnChangeNegocioSeleccionado = (negocioNombre) => {
@@ -49,6 +50,37 @@ function FormTurno() {
     let {horaDesde, horaHasta} = JSON.parse(negocioActual.diasDeAtencion);
     setHorariosDelNegocio(generateHorariosDisponibles(horaDesde, horaHasta, negocioActual.duracionTurno))
   } 
+
+  const handleSetFecha = (fecha) => {
+    setFecha(fecha);
+  }
+
+  const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+
+  const estaEnRangoDeDias = (fecha) => {
+    const dateObj = new Date(fecha);
+    const diaNombre = diasSemana[dateObj.getDay()];
+    let negocioActual = getNegocio(negocioSeleccionado);
+    let {diaDesde, diaHasta} = negocioActual?.diasDeAtencion 
+                              ? JSON.parse(negocioActual.diasDeAtencion) 
+                              : JSON.parse("{\"diaDesde\":\"Lunes\",\"diaHasta\":\"Sábado\",\"horaDesde\":\"09:00\",\"horaHasta\":\"20:00\"}")
+
+    const indiceDesde = diasSemana.indexOf(diaDesde);
+    const indiceHasta = diasSemana.indexOf(diaHasta);
+    const indiceActual = diasSemana.indexOf(diaNombre);
+
+    if (indiceDesde === -1 || indiceHasta === -1) {
+      console.error("Día inválido en diasDeAtencion");
+      return false;
+    }
+
+    if (indiceDesde <= indiceHasta) {
+      return indiceActual >= indiceDesde && indiceActual <= indiceHasta;
+    } else {
+      // Para casos como de "Viernes" a "Martes"
+      return indiceActual >= indiceDesde || indiceActual <= indiceHasta;
+    }
+  }
 
   useEffect(() => {
     fetch("api/negocios", {
@@ -71,8 +103,7 @@ function FormTurno() {
       <h2>Reservar turno</h2>
 
       <label>Negocio o Profesional</label>
-      <select onChange={(e) => handleOnChangeNegocioSeleccionado(e.target.value)} required>
-        <option value=""/>
+      <select value={negocioSeleccionado} onChange={(e) => handleOnChangeNegocioSeleccionado(e.target.value)} required>
         {
           negocios?.map(n => {
             return (
@@ -84,11 +115,14 @@ function FormTurno() {
       </select>
 
       <label>Fecha</label>
-      <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
+      <input type="date" value={fecha} onChange={(e) => handleSetFecha(e.target.value)} required />
 
       <label>Elige el horario del turno para el xx dd de mm</label>
 
-      <ul className="horarios-list">
+      {estaEnRangoDeDias(fecha)
+      ?
+      (
+        <ul className="horarios-list">
         {
           horariosDelNegocio.map((h, index) => {
             return(
@@ -96,13 +130,13 @@ function FormTurno() {
                 <div className="horarios-list-item">
                   <div className="left-section">
                     <input
-                      type="checkbox"
+                      type="radio"
                       id={index}
                       name="hora"
                       value={h}
-                      defaultChecked={false}
-                      disabled={true}
-                      //onChange={}
+                      checked={horaSeleccionada === h}
+                      onChange={(e) => setHoraSeleccionada(e.target.value)}
+                      disabled={false}
                     />
                   </div>
                   <div className="right-section">{h}</div>
@@ -112,6 +146,11 @@ function FormTurno() {
           })
         }  
       </ul>
+      )
+      :
+      <p>No hay horarios disponibles para la fecha seleccionada</p>
+      }
+      
       <button type="submit">Solicitar Turno</button>
     </form>
   );
