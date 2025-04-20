@@ -8,18 +8,22 @@ function Login() {
   const [contrasenia, setcontrasenia] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit =  async (e) => {
     e.preventDefault();
-    fetch("/api/auth/login", {
+    await fetch("/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
       body: JSON.stringify({email: email, contrasenia: contrasenia})
     })
-    .then(res => {
+    .then( async res => {
       if (res.ok) {
+        var user= await res.json().then(object=>object);
+        console.log(user);
+        
+        localStorage.setItem('user', user.username);
         navigate('/turno');
-        return;
+        return
       };
       throw new Error("Credenciales incorrectas");
     })

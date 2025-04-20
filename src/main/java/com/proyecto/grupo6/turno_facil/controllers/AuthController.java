@@ -2,6 +2,8 @@ package com.proyecto.grupo6.turno_facil.controllers;
 
 import com.proyecto.grupo6.turno_facil.models.Usuario;
 import com.proyecto.grupo6.turno_facil.repository.UsuarioRepository;
+import com.proyecto.grupo6.turno_facil.springSecurity.UsuarioDetails;
+
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -50,11 +53,30 @@ public class AuthController {
                     new UsernamePasswordAuthenticationToken(email, password)
             );
 
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            SecurityContext context= SecurityContextHolder.getContext();
+            context.setAuthentication(auth);
+            UsuarioDetails usuario=(UsuarioDetails)context.getAuthentication().getPrincipal();
+            System.out.println(usuario);
 
-            return ResponseEntity.ok("Login exitoso.");
+            System.out.println(usuario.getUsername());
+            return ResponseEntity.ok(usuario);
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
         }
+    }
+
+    @PostMapping("/sacarTurno")
+    public ResponseEntity<?> sacarTurno(@RequestBody Map<String, String> turnoData, HttpSession session) {
+        SecurityContext context= SecurityContextHolder.getContext();
+        Authentication auth=context.getAuthentication();
+        turnoData.values().stream().forEach(System.out::println);
+        System.out.println(auth.isAuthenticated());
+        if(!auth.isAuthenticated()){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Por favor inicie sesión para continuar");
+        }
+        System.out.println(auth.getPrincipal());
+        UsuarioDetails usuario= (UsuarioDetails)auth.getPrincipal();
+
+        return ResponseEntity.ok("Turno solicitado correctamente");
     }
 }

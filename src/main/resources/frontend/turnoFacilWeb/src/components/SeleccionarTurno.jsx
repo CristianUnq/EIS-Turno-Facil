@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import FormTurno from '../FormTurno'
 
 
 
@@ -6,7 +7,7 @@ const SelectTurn = () => {
   // const [selectedDate, setSelectedDate] = useState(new Date());
   return (
     <div>
-      <h2>Seleccionar Turno</h2>
+      <FormTurno/>
       
     </div>
   );

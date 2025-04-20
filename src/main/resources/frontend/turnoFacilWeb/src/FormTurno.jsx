@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
-import './FormTurno.css';
+import './styles/FormTurno.css';
 
 function FormTurno() {
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
   const [fecha, setFecha] = useState('');
+  const [hora, setHora] = useState('');
   const [especialidad, setEspecialidad] = useState('');
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   alert(`Turno solicitado:\nNombre: ${nombre}\nEmail: ${email}\nFecha: ${fecha}\nEspecialidad: ${especialidad}`);
+  // };
+  const handleSubmit =  async (e) => {
     e.preventDefault();
-    alert(`Turno solicitado:\nNombre: ${nombre}\nEmail: ${email}\nFecha: ${fecha}\nEspecialidad: ${especialidad}`);
+    await fetch("/api/auth/sacarTurno", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({nombreNegocio: nombre, fecha: fecha, hora: hora})
+    })
+    .then(res => {
+      if (res.ok) {
+        console.log(res);
+        return
+      };
+      throw new Error("Credenciales incorrectas");
+    })
+    .catch(err => alert("❌ " + err.message));
   };
 
   return (
@@ -33,6 +51,8 @@ function FormTurno() {
       <label>Fecha</label>
       <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
 
+      <label>Fecha</label>
+      <input type="time" value={hora} onChange={(e) => setHora(e.target.value)} required />
       <button type="submit">Solicitar Turno</button>
     </form>
   );
