@@ -63,9 +63,9 @@ function FormTurno() {
     let {horaDesde, horaHasta} = JSON.parse(negocioActual.diasDeAtencion);
     setHorariosDelNegocio(generateHorariosDisponibles(horaDesde, horaHasta, negocioActual.duracionTurno))
   } 
-  const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
-
+  
   const estaEnRangoDeDias = (fecha) => {
+    const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
     const dateObj = new Date(fecha);
     const diaNombre = diasSemana[dateObj.getDay()];
     let negocioActual = getNegocio(negocioSeleccionado);
@@ -94,13 +94,13 @@ function FormTurno() {
     if (!fechaStr) return "";
   
     const fecha = new Date(fechaStr + "T00:00:00"); 
-    //const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+    const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     const meses = [
       "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
       "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
     ];
   
-    const diaSemana = diasSemana[fecha.getDay()];
+    const diaSemana = dias[fecha.getDay()];
     const dia = fecha.getDate();
     const mes = meses[fecha.getMonth()];
     const anio = fecha.getFullYear();
@@ -146,7 +146,7 @@ function FormTurno() {
 
       <label>Elige el horario del turno para el {fechaFormateada(fechaSeleccionada)} </label>
 
-      {estaEnRangoDeDias(fecha)
+      {estaEnRangoDeDias(fechaSeleccionada)
       ?
       (
         <ul className="horarios-list">
