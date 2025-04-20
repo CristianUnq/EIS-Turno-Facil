@@ -2,14 +2,29 @@ import React, { useState, useEffect } from 'react';
 import '../styles/FormTurno.css';
 
 function FormTurno() {
-  const [fecha, setFecha] = useState('');
+  const [fechaSeleccionada, setFechaSeleccionada] = useState('');
+  const [horaSeleccionada, setHoraSeleccionada] = useState('')
   const [negocioSeleccionado, setNegocioSeleccionado] = useState('');
   const [negocios, setNegocios] = useState(null);
   const [horariosDelNegocio, setHorariosDelNegocio] = useState([])
 
- const handleSubmit = (e) => {
-    e.preventDefault();
-    //alert(`Turno solicitado:\nNombre: ${nombre}\nEmail: ${email}\nFecha: ${fecha}\nEspecialidad: ${especialidad}`);
+  const handleSubmit =  async (e) => {
+    await fetch("/api/auth/sacarTurno", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({usuario: localStorage.getItem('usuario'), negocio: negocioSeleccionado, fecha:fechaSeleccionada, horaTurno:horaSeleccionada})
+    })
+    .then(res => {
+      if (res.ok) {
+        alert("✅ " + "lito");
+        return
+      };
+      // throw new Error("Credenciales incorrectas");
+    })
+    //.then(msg => alert("✅ " + msg))
+    .catch(err => alert("❌ " + err.message));
+      //alert(`Turno solicitado:\nNombre: ${nombre}\nEmail: ${email}\nFecha: ${fecha}\nEspecialidad: ${especialidad}`);
   };
 
   const generateHorariosDisponibles = (horaDesde, horaHasta, intervaloMinutos = 60) => {
@@ -17,7 +32,6 @@ function FormTurno() {
   
     const [desdeHoras, desdeMinutos] = horaDesde.split(":").map(Number);
     const [hastaHoras, hastaMinutos] = horaHasta.split(":").map(Number);
-  
     const inicio = new Date();
     inicio.setHours(desdeHoras, desdeMinutos, 0, 0);
   
@@ -84,7 +98,7 @@ function FormTurno() {
       </select>
 
       <label>Fecha</label>
-      <input type="date" value={fecha} onChange={(e) => setFecha(e.target.value)} required />
+      <input type="date" value={fechaSeleccionada} onChange={(e) => setFechaSeleccionada(e.target.value)} required />
 
       <label>Elige el horario del turno para el xx dd de mm</label>
 
@@ -102,7 +116,7 @@ function FormTurno() {
                       value={h}
                       defaultChecked={false}
                       disabled={true}
-                      //onChange={}
+                      onChange={setHoraSeleccionada(h)}
                     />
                   </div>
                   <div className="right-section">{h}</div>
