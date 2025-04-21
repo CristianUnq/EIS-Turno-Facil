@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import DatePicker,{registerLocale} from 'react-datepicker';
+import { es } from 'date-fns/locale/es';
+import 'react-datepicker/dist/react-datepicker.css'
 import '../styles/FormTurno.css';
+
 
 function FormTurno() {
   const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date().toISOString().split('T')[0])
@@ -8,6 +12,12 @@ function FormTurno() {
   const [negocios, setNegocios] = useState(null);
   const [horariosDelNegocio, setHorariosDelNegocio] = useState([])
 
+  const today = new Date();
+  const maxDate = new Date();
+  maxDate.setDate(today.getDate() + 30);
+  const disabledDates = []
+
+  registerLocale("es",es);
   const handleSubmit = (e) => {
     e.preventDefault();
     fetch("/api/auth/sacarTurno", {
@@ -66,6 +76,16 @@ function FormTurno() {
     let negocioActual = getNegocio(negocioNombre);
     let {horaDesde, horaHasta} = JSON.parse(negocioActual.diasDeAtencion);
     setHorariosDelNegocio(generateHorariosDisponibles(horaDesde, horaHasta, negocioActual.duracionTurno))
+
+    const hoy=today;
+    while (hoy <= maxDate) {
+      if (estaEnRangoDeDias(hoy)) {
+        disabledDates.push(new Date(hoy)); // clone to avoid mutation
+      }
+    
+      // Move to the next day
+      hoy.setDate(hoy.getDate() + 1);
+    }
   } 
   
   const estaEnRangoDeDias = (fecha) => {
@@ -145,10 +165,21 @@ function FormTurno() {
         }
         
       </select>
-
+      {negocioSeleccionado?
+      (<div>
       <label>Fecha</label>
-      <input type="date" value={fechaSeleccionada} onChange={(e) => setFechaSeleccionada(e.target.value)} required />
-
+      
+        <DatePicker minDate={today}
+                    maxDate={maxDate}
+                    excludeDates={disabledDates}
+                    previousMonthButtonLabel={""} 
+                    nextMonthButtonLabel={""} 
+                    locale="es" 
+                    dateFormat={"dd/MM/yyyy"} 
+                    selected={fechaSeleccionada} 
+                    onChange={e=>setFechaSeleccionada(e)} 
+                    showMonthDropdown 
+                    showYearDropdown />
       <label>Elige el horario del turno para el {fechaFormateada(fechaSeleccionada)} </label>
 
       {estaEnRangoDeDias(fechaSeleccionada)
@@ -182,9 +213,11 @@ function FormTurno() {
       :
       <p>No hay horarios disponibles para la fecha seleccionada</p>
       }
-      
+
       <button type="submit">Solicitar Turno</button>
-    </form>
+
+      </div>):(<div/>)}
+      </form>
   );
 }
 

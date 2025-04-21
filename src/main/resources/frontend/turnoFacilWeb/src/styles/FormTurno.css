@@ -55,3 +55,58 @@
 .right-section {
   margin-left: 1rem;
 }
+
+.react-datepicker button{
+  margin-top: 0;
+  padding: 0;
+  width: 10%;
+  background-color: #4fa4ff00;
+  font-size: 0;
+}
+
+.react-datepicker button:hover{
+  background-color: #4fa4ff00;
+}
+
+
+.react-datepicker__navigation-icon {
+  position: relative;
+  top: -10px;
+  font-size: 20px;
+  width: 0;
+}
+
+.react-datepicker h2{
+  margin-bottom: 0;
+}
+
+.react-datepicker {
+  font-size: 0.8em;
+}
+.react-datepicker__header {
+  padding-top: 0.64em;
+}
+.react-datepicker__month {
+  margin: 0.32em 0.8em;
+}
+.react-datepicker__day-name, .react-datepicker__day {
+  width: 1.52em;
+  line-height: 1.52em;
+  margin: 0.133em;
+}
+.react-datepicker__current-month {
+  font-size: 0.8em;
+}
+.react-datepicker__navigation {
+  top: 0.8em;
+  line-height: 1.36em;
+  border: 0.36em solid transparent;
+}
+.react-datepicker__navigation--previous {
+  border-right-color: #ccc;
+  left: 0.8em;
+}
+.react-datepicker__navigation--next {
+  border-left-color: #ccc;
+  right: 0.8em;
+}
