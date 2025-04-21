@@ -15,7 +15,6 @@ function FormTurno() {
   const today = new Date();
   const maxDate = new Date();
   maxDate.setDate(today.getDate() + 30);
-  const disabledDates = []
 
   registerLocale("es",es);
   const handleSubmit = (e) => {
@@ -76,22 +75,12 @@ function FormTurno() {
     let negocioActual = getNegocio(negocioNombre);
     let {horaDesde, horaHasta} = JSON.parse(negocioActual.diasDeAtencion);
     setHorariosDelNegocio(generateHorariosDisponibles(horaDesde, horaHasta, negocioActual.duracionTurno))
-
-    const hoy=today;
-    while (hoy <= maxDate) {
-      if (estaEnRangoDeDias(hoy)) {
-        disabledDates.push(new Date(hoy)); // clone to avoid mutation
-      }
-    
-      // Move to the next day
-      hoy.setDate(hoy.getDate() + 1);
-    }
   } 
   
   const estaEnRangoDeDias = (fecha) => {
     const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
     const dateObj = new Date(fecha);
-    const diaNombre = diasSemana[dateObj.getDay()];
+    const diaNombre = diasSemana[(dateObj.getDay() +6) %7];
     let negocioActual = getNegocio(negocioSeleccionado);
     let {diaDesde, diaHasta} = negocioActual?.diasDeAtencion 
                               ? JSON.parse(negocioActual.diasDeAtencion) 
@@ -117,7 +106,7 @@ function FormTurno() {
   const fechaFormateada = (fechaStr) => {
     if (!fechaStr) return "";
   
-    const fecha = new Date(fechaStr + "T00:00:00"); 
+    const fecha = new Date(fechaStr); 
     const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     const meses = [
       "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
@@ -149,6 +138,7 @@ function FormTurno() {
     .catch(err => alert("❌ " + err.message));
   }, [])
 
+
   return (
     <form onSubmit={handleSubmit} className="form-turno">
       <h2>Reservar turno</h2>
@@ -171,13 +161,13 @@ function FormTurno() {
       
         <DatePicker minDate={today}
                     maxDate={maxDate}
-                    excludeDates={disabledDates}
+                    filterDate={estaEnRangoDeDias}
                     previousMonthButtonLabel={""} 
                     nextMonthButtonLabel={""} 
                     locale="es" 
                     dateFormat={"dd/MM/yyyy"} 
                     selected={fechaSeleccionada} 
-                    onChange={e=>setFechaSeleccionada(e)} 
+                    onChange={date=>setFechaSeleccionada(date)} 
                     showMonthDropdown 
                     showYearDropdown />
       <label>Elige el horario del turno para el {fechaFormateada(fechaSeleccionada)} </label>
