@@ -1,7 +1,7 @@
 package com.proyecto.grupo6.turno_facil.models;
 
-import java.sql.Time;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import jakarta.persistence.*;
 
@@ -13,16 +13,15 @@ public class Turno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private LocalDate fecha;
 
-    private Date fecha;
-
-    private Time hora;
+    private LocalTime hora;
 
     private String emailUsuario;
 
     private String emailNegocio;
 
-    public Turno(Long id, Date fecha, Time hora, String emailUsuario, String emailNegocio){
+    public Turno(Long id, LocalDate fecha, LocalTime hora, String emailUsuario, String emailNegocio){
         this.id=id;
         this.fecha=fecha;
         this.hora=hora;
@@ -38,19 +37,19 @@ public class Turno {
         this.id = id;
     }
 
-    public Date getFecha() {
+    public LocalDate getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }
 
-    public Time getHora() {
+    public LocalTime getHora() {
         return this.hora;
     }
 
-    public void setHora(Time hora) {
+    public void setHora(LocalTime hora) {
         this.hora = hora;
     }
 

@@ -3,6 +3,8 @@ package com.proyecto.grupo6.turno_facil.controllers;
 import com.proyecto.grupo6.turno_facil.models.Usuario;
 import com.proyecto.grupo6.turno_facil.repository.UsuarioRepository;
 import com.proyecto.grupo6.turno_facil.springSecurity.UsuarioDetails;
+import com.proyecto.grupo6.turno_facil.controllers.dto.TurnoDTO;
+import com.proyecto.grupo6.turno_facil.repository.TurnoRepository;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,9 @@ public class AuthController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private TurnoRepository turnoRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -66,17 +71,12 @@ public class AuthController {
     }
 
     @PostMapping("/sacarTurno")
-    public ResponseEntity<?> sacarTurno(@RequestBody Map<String, String> turnoData, HttpSession session) {
-        SecurityContext context= SecurityContextHolder.getContext();
-        Authentication auth=context.getAuthentication();
-        turnoData.values().stream().forEach(System.out::println);
-        System.out.println(auth.isAuthenticated());
-        if(!auth.isAuthenticated()){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Por favor inicie sesión para continuar");
-        }
-        System.out.println(auth.getPrincipal());
-        UsuarioDetails usuario= (UsuarioDetails)auth.getPrincipal();
-
-        return ResponseEntity.ok("Turno solicitado correctamente");
+    public ResponseEntity<?> sacarTurno(@RequestBody TurnoDTO turnoData, HttpSession session) {
+            try {
+                turnoRepository.save(turnoData.aModelo());
+                return ResponseEntity.ok("Turno solicitado correctamente");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Ha habido un problema");
+            }
     }
 }

@@ -8,20 +8,24 @@ function FormTurno() {
   const [negocios, setNegocios] = useState(null);
   const [horariosDelNegocio, setHorariosDelNegocio] = useState([])
 
-  const handleSubmit =  async (e) => {
-    await fetch("/api/auth/sacarTurno", {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetch("/api/auth/sacarTurno", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({usuario: localStorage.getItem('usuario'), negocio: negocioSeleccionado, fecha:fechaSeleccionada, horaTurno:horaSeleccionada})
+      body: JSON.stringify({id:null,emailUsuario: localStorage.getItem('user'), emailNegocio: getNegocio(negocioSeleccionado).email, fecha:fechaSeleccionada, hora:horaSeleccionada})
     })
-    .then(res => {
+    .then(async res => {
       if (res.ok) {
-        alert("✅ " + "lito");
-        return
+        return res.text()
       };
-      // throw new Error("Credenciales incorrectas");
+      throw new Error(await res.text())
     })
+    .then(msg => {
+      console.log(msg);
+      alert("✅ " + msg);}
+    )
     //.then(msg => alert("✅ " + msg))
     .catch(err => alert("❌ " + err.message));
       //alert(`Turno solicitado:\nNombre: ${nombre}\nEmail: ${email}\nFecha: ${fecha}\nEspecialidad: ${especialidad}`);
@@ -130,7 +134,8 @@ function FormTurno() {
       <h2>Reservar turno</h2>
 
       <label>Negocio o Profesional</label>
-      <select value={negocioSeleccionado} onChange={(e) => handleOnChangeNegocioSeleccionado(e.target.value)} required>
+      <select defaultValue={"Seleccione un negocio"} value={negocioSeleccionado} onChange={(e) => handleOnChangeNegocioSeleccionado(e.target.value)} required>
+      <option value="" disabled hidden>Seleccione negocio o profesional</option>
         {
           negocios?.map(n => {
             return (
