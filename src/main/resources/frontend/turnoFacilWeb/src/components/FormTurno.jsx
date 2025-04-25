@@ -6,7 +6,8 @@ import '../styles/FormTurno.css';
 
 
 function FormTurno() {
-  const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date().toISOString().split('T')[0])
+  const [fechaYHoraCompletaSeleccionada, setFechaYHoraCompletaSeleccionada] = useState(new Date())
+  const [fechaSeleccionada, setFechaSeleccionada] = useState()
   const [horaSeleccionada, setHoraSeleccionada] = useState("");
   const [negocioSeleccionado, setNegocioSeleccionado] = useState('');
   const [negocios, setNegocios] = useState(null);
@@ -32,7 +33,6 @@ function FormTurno() {
       throw new Error(await res.text())
     })
     .then(msg => {
-      console.log(msg);
       alert("✅ " + msg);}
     )
     //.then(msg => alert("✅ " + msg))
@@ -121,6 +121,50 @@ function FormTurno() {
     return `${diaSemana} ${dia} de ${mes} del ${anio}`;
   };
   
+  const estaEnRangoHoras= (date)=>{
+    const selectedDate = new Date(date);
+    let negocioActual = getNegocio(negocioSeleccionado);
+    let {horaDesde, horaHasta} = JSON.parse(negocioActual.diasDeAtencion);
+
+    const [minHoras, minMinutos] = horaDesde.split(":").map(Number);
+    const [maxHoras, maxMinutos] = horaHasta.split(":").map(Number);
+
+    const selectedHora = date.getHours();
+    const selectedMin = date.getMinutes();
+
+    const selectedTotalMin = selectedHora * 60 + selectedMin;
+    const minTotalMin = minHoras * 60 + minMinutos;
+    const maxTotalMin = maxHoras * 60 + maxMinutos;
+    return selectedTotalMin >= minTotalMin && selectedTotalMin <= maxTotalMin
+  }
+
+  const filterPassedTime = (date) => {
+    if (!date) return false;
+    const currentDate = new Date();
+    const selectedDate = new Date(date);
+
+    return currentDate.getTime() < selectedDate.getTime() && estaEnRangoHoras(date);
+  };
+
+  const handleDateChange = (date)=>{
+    console.log("datechange handled: "+ date);
+    
+    setFechaYHoraCompletaSeleccionada(date)
+    const fyhS=date
+    if (fyhS) {
+      const soloFecha = new Date(
+        fyhS.getFullYear(),
+        fyhS.getMonth(),
+        fyhS.getDate()
+      );
+      const soloHora = String(fyhS.getHours()).padStart(2, '0')+":"+String(fyhS.getMinutes()).padStart(2, '0')
+      setFechaSeleccionada(fyhS);
+      setHoraSeleccionada(soloHora);
+    } else {
+      setFechaSeleccionada(null);
+      setHoraSeleccionada(null);
+    }
+  }
 
   useEffect(() => {
     fetch("api/negocios", {
@@ -137,6 +181,7 @@ function FormTurno() {
     })
     .catch(err => alert("❌ " + err.message));
   }, [])
+
 
 
   return (
@@ -165,46 +210,26 @@ function FormTurno() {
                     previousMonthButtonLabel={""} 
                     nextMonthButtonLabel={""} 
                     locale="es" 
-                    dateFormat={"dd/MM/yyyy"} 
-                    selected={fechaSeleccionada} 
-                    onChange={date=>setFechaSeleccionada(date)} 
+                    dateFormat={"dd/MM/yyyy h:mm aa"} 
+                    selected={fechaYHoraCompletaSeleccionada} 
+                    onChange={date=> handleDateChange(date)} 
                     showMonthDropdown 
-                    showYearDropdown />
-      <label>Elige el horario del turno para el {fechaFormateada(fechaSeleccionada)} </label>
+                    showYearDropdown
+                    showTimeSelect
+                    filterTime={filterPassedTime}
+                    onFocus={(e) => e.target.readOnly = true}/>
+      <label>Elige el horario del turno para el {fechaFormateada(fechaYHoraCompletaSeleccionada)} </label>
 
-      {estaEnRangoDeDias(fechaSeleccionada)
+      {estaEnRangoDeDias(fechaSeleccionada) && estaEnRangoHoras(fechaSeleccionada)
       ?
       (
-        <ul className="horarios-list">
-        {
-          horariosDelNegocio.map((h, index) => {
-            return(
-              <li key={index}>
-                <div className="horarios-list-item">
-                  <div className="left-section">
-                    <input
-                      type="radio"
-                      id={index}
-                      name="hora"
-                      value={h}
-                      checked={horaSeleccionada === h}
-                      onChange={(e) => setHoraSeleccionada(e.target.value)}
-                      disabled={false}
-                    />
-                  </div>
-                  <div className="right-section">{h}</div>
-                </div>
-            </li>
-            );
-          })
-        }  
-      </ul>
+        <button type="submit">Solicitar Turno</button>
       )
       :
-      <p>No hay horarios disponibles para la fecha seleccionada</p>
+      <p>Seleccione un horario valido</p>
       }
-
-      <button type="submit">Solicitar Turno</button>
+      
+      
 
       </div>):(<div/>)}
       </form>
