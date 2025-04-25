@@ -122,6 +122,8 @@ function FormTurno() {
   };
   
   const estaEnRangoHoras= (date)=>{
+    if (!date) return false;
+    const currentDate = new Date();
     const selectedDate = new Date(date);
     let negocioActual = getNegocio(negocioSeleccionado);
     let {horaDesde, horaHasta} = JSON.parse(negocioActual.diasDeAtencion);
@@ -135,20 +137,10 @@ function FormTurno() {
     const selectedTotalMin = selectedHora * 60 + selectedMin;
     const minTotalMin = minHoras * 60 + minMinutos;
     const maxTotalMin = maxHoras * 60 + maxMinutos;
-    return selectedTotalMin >= minTotalMin && selectedTotalMin <= maxTotalMin
+    return currentDate.getTime() < selectedDate.getTime() && selectedTotalMin >= minTotalMin && selectedTotalMin <= maxTotalMin
   }
 
-  const filterPassedTime = (date) => {
-    if (!date) return false;
-    const currentDate = new Date();
-    const selectedDate = new Date(date);
-
-    return currentDate.getTime() < selectedDate.getTime() && estaEnRangoHoras(date);
-  };
-
   const handleDateChange = (date)=>{
-    console.log("datechange handled: "+ date);
-    
     setFechaYHoraCompletaSeleccionada(date)
     const fyhS=date
     if (fyhS) {
@@ -182,7 +174,9 @@ function FormTurno() {
     .catch(err => alert("❌ " + err.message));
   }, [])
 
-
+  const getTimeInterval= ()=>{
+    return getNegocio(negocioSeleccionado).duracionTurno
+  }
 
   return (
     <form onSubmit={handleSubmit} className="form-turno">
@@ -216,7 +210,8 @@ function FormTurno() {
                     showMonthDropdown 
                     showYearDropdown
                     showTimeSelect
-                    filterTime={filterPassedTime}
+                    filterTime={estaEnRangoHoras}
+                    timeIntervals={getTimeInterval()}
                     onFocus={(e) => e.target.readOnly = true}/>
       <label>Elige el horario del turno para el {fechaFormateada(fechaYHoraCompletaSeleccionada)} </label>
 
