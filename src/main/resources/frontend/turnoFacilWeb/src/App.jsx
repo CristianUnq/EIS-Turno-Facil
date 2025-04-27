@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
@@ -5,6 +6,7 @@ import Login from './components/Login';
 import RegistroNegocio from './components/RegistroNegocio';
 import SeleccionarTurno from './components/SeleccionarTurno';
 import RegistroUsuario from './components/RegistroUsuario'
+import MisTurnos from './components/MisTurnos'; 
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
         <Route path="/registroNegocio" element={<RegistroNegocio />} />
         <Route path="/registroUsuario" element={<RegistroUsuario />} />
         <Route path="/turno" element={<SeleccionarTurno />} />
+        <Route path="/misturnosuser" element={<MisTurnos />}/>
       </Routes>
     </Router>
   );
