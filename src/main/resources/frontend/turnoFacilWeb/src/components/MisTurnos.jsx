@@ -10,8 +10,8 @@ const MisTurnos = () => {
     const fetchTurnos = async () => {
       setLoading(true);
       try {
-        const email = localStorage.getItem("emailUsuario");
-        const response = await fetch(`/turnos?email=${email}`);
+        const email = localStorage.getItem("user");
+        const response = await fetch(`/api/turnos?email=${email}`);
         
         if (!response.ok) {
           throw new Error("Error al obtener los turnos");
@@ -19,13 +19,14 @@ const MisTurnos = () => {
   
         const data = await response.json();
         setTurnos(data);
+        console.log(data);
       } catch (error) {
         console.error("Error al traer los turnos:", error);
       } finally {
         setLoading(false);
       }
     };
-  
+    
     fetchTurnos();
   }, []);
 
@@ -50,12 +51,12 @@ const MisTurnos = () => {
             {turnos.map((turno) => (
               <li key={turno.id} className={styles.turno}>
                 <div className={styles.info}>
-                  <span className={styles.servicio}>{turno.servicio}</span>
+                  <span className={styles.servicio}>{turno.nombreNegocio}</span>
                   <span className={styles.fecha}>
                     {new Date(turno.fecha).toLocaleString('es-AR', {
-                      dateStyle: 'long',
-                      timeStyle: 'short'
+                      dateStyle: 'long'
                     })}
+                    {" " + turno.hora.slice(0,5)}
                   </span>
                 </div>
                 <button

@@ -17,14 +17,21 @@ public class Turno {
 
     private LocalTime hora;
 
+    private String nombreNegocio;
+
     private String emailUsuario;
 
     private String emailNegocio;
 
-    public Turno(Long id, LocalDate fecha, LocalTime hora, String emailUsuario, String emailNegocio){
+    public Turno(){
+
+    }
+
+    public Turno(Long id, LocalDate fecha, LocalTime hora,String nombreNegocio, String emailUsuario, String emailNegocio){
         this.id=id;
         this.fecha=fecha;
         this.hora=hora;
+        this.nombreNegocio=nombreNegocio;
         this.emailUsuario=emailUsuario;
         this.emailNegocio=emailNegocio;
     }
@@ -51,6 +58,14 @@ public class Turno {
 
     public void setHora(LocalTime hora) {
         this.hora = hora;
+    }
+
+    public String getNombreNegocio(){
+        return this.nombreNegocio;
+    }
+
+    public void setNombreNegocio(String nombre){
+        this.nombreNegocio = nombre;
     }
 
     public String getEmailUsuario() {

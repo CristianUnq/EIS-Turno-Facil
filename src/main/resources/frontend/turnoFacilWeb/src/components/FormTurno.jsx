@@ -3,6 +3,7 @@ import DatePicker,{registerLocale} from 'react-datepicker';
 import { es } from 'date-fns/locale/es';
 import 'react-datepicker/dist/react-datepicker.css'
 import '../styles/FormTurno.css';
+import { useNavigate } from 'react-router-dom';
 
 
 function FormTurno() {
@@ -16,7 +17,10 @@ function FormTurno() {
   const today = new Date();
   const maxDate = new Date();
   maxDate.setDate(today.getDate() + 30);
-
+  const navigate = useNavigate();
+  const handleClick = ()=> {
+    navigate("/misturnosuser")
+  }
   registerLocale("es",es);
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,7 +28,7 @@ function FormTurno() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({id:null,emailUsuario: localStorage.getItem('user'), emailNegocio: getNegocio(negocioSeleccionado).email, fecha:fechaSeleccionada, hora:horaSeleccionada})
+      body: JSON.stringify({id:null,emailUsuario: localStorage.getItem('user'), nombreNegocio: negocioSeleccionado, emailNegocio: getNegocio(negocioSeleccionado).email, fecha:fechaSeleccionada, hora:horaSeleccionada})
     })
     .then(async res => {
       if (res.ok) {
@@ -227,6 +231,7 @@ function FormTurno() {
       
 
       </div>):(<div/>)}
+      <button type= "button" onClick={handleClick}>Mis Turnos</button>
       </form>
   );
 }

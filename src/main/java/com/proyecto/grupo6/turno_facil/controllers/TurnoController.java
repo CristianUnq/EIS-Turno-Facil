@@ -1,5 +1,6 @@
 package com.proyecto.grupo6.turno_facil.controllers;
 
+import com.proyecto.grupo6.turno_facil.controllers.dto.TurnoDTO;
 import com.proyecto.grupo6.turno_facil.models.Turno;
 import com.proyecto.grupo6.turno_facil.repository.TurnoRepository;
 
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,6 +24,7 @@ public class TurnoController {
 
     @GetMapping("/turnos")
     public ResponseEntity<?> getTurnosUsuario(@RequestParam String email) {
+        
         List<Turno> turnos = turnoRepository.findAllByEmailUsuario(email);
         if(!turnos.isEmpty()){
             return ResponseEntity.ok(turnos);

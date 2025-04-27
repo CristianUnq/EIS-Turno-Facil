@@ -13,6 +13,7 @@ public class TurnoDTO{
 
     @JsonFormat(pattern ="HH:mm")
     public LocalTime hora;
+    public String nombreNegocio;
     public String emailUsuario;
     public String emailNegocio;
 
@@ -21,6 +22,7 @@ public class TurnoDTO{
         this.id=turno.getId();
         this.fecha=turno.getFecha();
         this.hora=turno.getHora();
+        this.nombreNegocio=turno.getNombreNegocio();
         this.emailNegocio=turno.getEmailNegocio();
         this.emailUsuario=turno.getEmailUsuario();
     }
@@ -30,6 +32,6 @@ public class TurnoDTO{
     }
 
     public Turno aModelo(){
-        return new Turno(this.id,this.fecha,this.hora,this.emailUsuario,this.emailNegocio);
+        return new Turno(this.id,this.fecha,this.hora,this.nombreNegocio,this.emailUsuario,this.emailNegocio);
     }
 }
