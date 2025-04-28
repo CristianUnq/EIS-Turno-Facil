@@ -24,11 +24,11 @@
   padding: 0.5rem;
   margin-top: 0.3rem;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 5px; 
 }
 
 .form-turno button {
-  margin: 0.5rem;
+  margin: 1.5rem auto;
   width: 50%;
   padding: 0.8rem;
   background-color: #032b44;

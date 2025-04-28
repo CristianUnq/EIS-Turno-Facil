@@ -7,6 +7,7 @@ import RegistroNegocio from './components/RegistroNegocio';
 import SeleccionarTurno from './components/SeleccionarTurno';
 import RegistroUsuario from './components/RegistroUsuario'
 import MisTurnos from './components/MisTurnos'; 
+import './styles/global.css'
 
 function App() {
   return (
