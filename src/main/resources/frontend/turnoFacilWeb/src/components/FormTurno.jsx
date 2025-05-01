@@ -13,6 +13,7 @@ function FormTurno() {
   const [negocioSeleccionado, setNegocioSeleccionado] = useState('');
   const [negocios, setNegocios] = useState(null);
   const [horariosDelNegocio, setHorariosDelNegocio] = useState([])
+  const [turnosOcupados, setTurnosOcupados] = useState([]);
 
   const today = new Date();
   const maxDate = new Date();
@@ -32,6 +33,7 @@ function FormTurno() {
     })
     .then(async res => {
       if (res.ok) {
+        window.location.reload()
         return res.text()
       };
       throw new Error(await res.text())
@@ -124,24 +126,58 @@ function FormTurno() {
   
     return `${diaSemana} ${dia} de ${mes} del ${anio}`;
   };
+
+  const updateTurnosOcupados = async () => {
+    try {
+      const emailNegocio = getNegocio(negocioSeleccionado)?.email;
+      if (!emailNegocio) return;
+  
+      const response = await fetch(`/api/turnos/negocio?email=${emailNegocio}`);
+      if (!response.ok) return;
+
+      const turnosNegocio = await response.json();
+      const fechasYHoras = turnosNegocio.map(t => `${t.fecha}T${t.hora}`);
+      setTurnosOcupados(fechasYHoras);
+    } catch (e) {
+      throw new Error("Error al consultar turnos ocupados");
+    }
+  }
+  
+  const fechasYHorasOcupadas = turnosOcupados?.map(str => new Date(str));
   
   const estaEnRangoHoras= (date)=>{
     if (!date) return false;
-    const currentDate = new Date();
-    const selectedDate = new Date(date);
-    let negocioActual = getNegocio(negocioSeleccionado);
-    let {horaDesde, horaHasta} = JSON.parse(negocioActual.diasDeAtencion);
 
+    const now = new Date();
+    const selectedDate = new Date(date);
+
+    const negocioActual = getNegocio(negocioSeleccionado);
+    if (!negocioActual?.diasDeAtencion) return false;
+
+    const { horaDesde, horaHasta } = JSON.parse(negocioActual.diasDeAtencion);
     const [minHoras, minMinutos] = horaDesde.split(":").map(Number);
     const [maxHoras, maxMinutos] = horaHasta.split(":").map(Number);
 
-    const selectedHora = date.getHours();
-    const selectedMin = date.getMinutes();
+    const selectedMinTotal = selectedDate.getHours() * 60 + selectedDate.getMinutes();
+    const minTotal = minHoras * 60 + minMinutos;
+    const maxTotal = maxHoras * 60 + maxMinutos;
 
-    const selectedTotalMin = selectedHora * 60 + selectedMin;
-    const minTotalMin = minHoras * 60 + minMinutos;
-    const maxTotalMin = maxHoras * 60 + maxMinutos;
-    return currentDate.getTime() < selectedDate.getTime() && selectedTotalMin >= minTotalMin && selectedTotalMin <= maxTotalMin
+    // Condición 1: dentro del rango del negocio
+    const dentroDelRango = selectedMinTotal >= minTotal && selectedMinTotal <= maxTotal;
+
+    // Condición 2: si la fecha es hoy, que sea posterior a la hora actual
+    const esHoy = selectedDate.toDateString() === now.toDateString();
+    const esFuturo = !esHoy || selectedDate.getTime() > now.getTime();
+
+    // Condición 3: que no esté ocupado
+    const ocupado = turnosOcupados.some(str => {
+      const t = new Date(str);
+      return t.getTime() === selectedDate.getTime();
+    });
+
+    return dentroDelRango && esFuturo && !ocupado;
+
+    //return currentDate.getTime() < selectedDate.getTime() && selectedTotalMin >= minTotalMin && selectedTotalMin <= maxTotalMin
   }
 
   const handleDateChange = (date)=>{
@@ -178,6 +214,10 @@ function FormTurno() {
     .catch(err => alert("❌ " + err.message));
   }, [])
 
+  useEffect(() => {
+    updateTurnosOcupados();
+  }, [negocioSeleccionado]); // se actualiza si cambia el negocio
+
   const getTimeInterval= ()=>{
     return getNegocio(negocioSeleccionado).duracionTurno
   }
@@ -205,6 +245,7 @@ function FormTurno() {
         <DatePicker minDate={today}
                     maxDate={maxDate}
                     filterDate={estaEnRangoDeDias}
+                    filterTime={estaEnRangoHoras}
                     previousMonthButtonLabel={""} 
                     nextMonthButtonLabel={""} 
                     locale="es" 
@@ -214,7 +255,6 @@ function FormTurno() {
                     showMonthDropdown 
                     showYearDropdown
                     showTimeSelect
-                    filterTime={estaEnRangoHoras}
                     timeIntervals={getTimeInterval()}
                     onFocus={(e) => e.target.readOnly = true}/>
       <label>Elige el horario del turno para el {fechaFormateada(fechaYHoraCompletaSeleccionada)} </label>
