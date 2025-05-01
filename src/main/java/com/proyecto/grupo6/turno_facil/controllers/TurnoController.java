@@ -31,4 +31,14 @@ public class TurnoController {
         }
         return ResponseEntity.badRequest().body("No se encontraron turnos agendados");
     }
+
+    @GetMapping("/turnos/negocio")
+    public ResponseEntity<?> getTurnosNegocio(@RequestParam String email) {
+
+        List<Turno> turnos = turnoRepository.findAllByEmailNegocio(email);
+        if(!turnos.isEmpty()){
+            return ResponseEntity.ok(turnos);
+        }
+        return ResponseEntity.badRequest().body("No hay turnos agendados para el negocio");
+    }
 }
