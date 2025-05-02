@@ -7,7 +7,9 @@ import RegistroNegocio from './components/RegistroNegocio';
 import SeleccionarTurno from './components/SeleccionarTurno';
 import RegistroUsuario from './components/RegistroUsuario'
 import MisTurnos from './components/MisTurnos'; 
+import TurnosNegocio from './components/TurnosNegocio';
 import './styles/global.css'
+import TurnosHistoricos from './components/TurnosHistoricos';
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/registroUsuario" element={<RegistroUsuario />} />
         <Route path="/turno" element={<SeleccionarTurno />} />
         <Route path="/misturnosuser" element={<MisTurnos />}/>
+        <Route path="/turnosNegocio" element={<TurnosNegocio />}/>
+        <Route path="/turnosHistoricos" element={<TurnosHistoricos />}/>
       </Routes>
     </Router>
   );

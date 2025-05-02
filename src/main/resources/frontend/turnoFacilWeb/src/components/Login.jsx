@@ -22,7 +22,11 @@ function Login() {
         console.log(user);
         
         localStorage.setItem('user', user.username);
-        navigate('/turno');
+        if (user.isNegocio) {
+          navigate('/turnosNegocio');
+        } else {
+          navigate('/turno');
+        }
         return
       };
       throw new Error("Credenciales incorrectas");

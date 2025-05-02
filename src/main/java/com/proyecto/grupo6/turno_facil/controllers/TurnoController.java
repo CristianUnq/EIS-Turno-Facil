@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @RestController
 @RequestMapping("/api")
@@ -32,12 +34,26 @@ public class TurnoController {
         return ResponseEntity.badRequest().body("No se encontraron turnos agendados");
     }
 
-    @GetMapping("/turnos/negocio")
-    public ResponseEntity<?> getTurnosNegocio(@RequestParam String email) {
+    @GetMapping("/turnosFuturos/negocio")
+    public ResponseEntity<?> getTurnosFuturosNegocio(@RequestParam String email) {
 
-        List<Turno> turnos = turnoRepository.findAllByEmailNegocio(email);
-        if(!turnos.isEmpty()){
-            return ResponseEntity.ok(turnos);
+        LocalDate fechaActual = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
+        List<Turno> turnosFuturos = turnoRepository.findTurnosFuturos(email, fechaActual, horaActual);
+        if(!turnosFuturos.isEmpty()){
+            return ResponseEntity.ok(turnosFuturos);
+        }
+        return ResponseEntity.badRequest().body("No hay turnos agendados para el negocio");
+    }
+
+    @GetMapping("/turnosHistoricos/negocio")
+    public ResponseEntity<?> getTurnosHistoricosNegocio(@RequestParam String email) {
+
+        LocalDate fechaActual = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
+        List<Turno> turnosHistoricos = turnoRepository.findTurnosHistoricos(email, fechaActual, horaActual);
+        if(!turnosHistoricos.isEmpty()){
+            return ResponseEntity.ok(turnosHistoricos);
         }
         return ResponseEntity.badRequest().body("No hay turnos agendados para el negocio");
     }

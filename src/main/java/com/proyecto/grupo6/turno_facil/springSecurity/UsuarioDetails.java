@@ -30,6 +30,10 @@ public class UsuarioDetails implements UserDetails {
         return usuario.getEmail();
     }
 
+    public Boolean getIsNegocio() {
+        return usuario.isNegocio();
+    }
+
     @Override
     public boolean isAccountNonExpired() { return true; }
 
