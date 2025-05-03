@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/MisTurnos.module.css';
 import Header from './Header';
-import { useNavigate } from 'react-router-dom';
 
 const MisTurnos = () => {
   const [turnos, setTurnos] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTurnos = async () => {
       setLoading(true);
       try {
         const email = localStorage.getItem("user");
-        const response = await fetch(`/api/turnosFuturos/usuario?email=${email}`);
+        const response = await fetch(`/api/turnosHistoricos/usuario?email=${email}`);
         
         if (!response.ok) {
           throw new Error("Error al obtener los turnos");
@@ -71,13 +69,6 @@ const MisTurnos = () => {
             ))}
           </ul>
         )}
-
-        <button
-                  className={styles.botonCancelar}
-                  onClick={() => navigate('/turnosHistoricosUsuario')}
-                >
-                  Historicos
-                </button>
       </div>
     </>
   );

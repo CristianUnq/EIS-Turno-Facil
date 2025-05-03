@@ -24,10 +24,24 @@ public class TurnoController {
         this.turnoRepository = turnoRepository;
     }
 
-    @GetMapping("/turnos")
-    public ResponseEntity<?> getTurnosUsuario(@RequestParam String email) {
-        
-        List<Turno> turnos = turnoRepository.findAllByEmailUsuario(email);
+    @GetMapping("/turnosFuturos/usuario")
+    public ResponseEntity<?> getTurnosFuturosUsuario(@RequestParam String email) {
+
+        LocalDate fechaActual = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
+        List<Turno> turnos = turnoRepository.findTurnosFuturosUsuario(email, fechaActual.toString(), horaActual.toString());
+        if(!turnos.isEmpty()){
+            return ResponseEntity.ok(turnos);
+        }
+        return ResponseEntity.badRequest().body("No se encontraron turnos agendados");
+    }
+
+    @GetMapping("/turnosHistoricos/usuario")
+    public ResponseEntity<?> getTurnosHistoricosUsuario(@RequestParam String email) {
+
+        LocalDate fechaActual = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
+        List<Turno> turnos = turnoRepository.findTurnosHistoricosUsuario(email, fechaActual.toString(), horaActual.toString());
         if(!turnos.isEmpty()){
             return ResponseEntity.ok(turnos);
         }
@@ -39,7 +53,7 @@ public class TurnoController {
 
         LocalDate fechaActual = LocalDate.now();
         LocalTime horaActual = LocalTime.now();
-        List<Turno> turnosFuturos = turnoRepository.findTurnosFuturos(email, fechaActual.toString(), horaActual.toString());
+        List<Turno> turnosFuturos = turnoRepository.findTurnosFuturosNegocio(email, fechaActual.toString(), horaActual.toString());
         if(!turnosFuturos.isEmpty()){
             return ResponseEntity.ok(turnosFuturos);
         }
@@ -51,7 +65,7 @@ public class TurnoController {
 
         LocalDate fechaActual = LocalDate.now();
         LocalTime horaActual = LocalTime.now();
-        List<Turno> turnosHistoricos = turnoRepository.findTurnosHistoricos(email, fechaActual.toString(), horaActual.toString());
+        List<Turno> turnosHistoricos = turnoRepository.findTurnosHistoricosNegocio(email, fechaActual.toString(), horaActual.toString());
         if(!turnosHistoricos.isEmpty()){
             return ResponseEntity.ok(turnosHistoricos);
         }

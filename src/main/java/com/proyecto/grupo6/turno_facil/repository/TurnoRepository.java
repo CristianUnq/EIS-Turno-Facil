@@ -17,10 +17,28 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
 
     List<Turno> findAllByEmailNegocio(String emailNegocio);
 
+    @Query(value = "SELECT * FROM Turno t WHERE t.email_usuario = :emailUsuario " +
+            "AND (t.fecha < :fecha OR (t.fecha = :fecha AND t.hora < :hora))",
+            nativeQuery = true)
+    List<Turno> findTurnosHistoricosUsuario(
+            @Param("emailUsuario") String emailUsuario,
+            @Param("fecha") String fecha,
+            @Param("hora") String hora
+    );
+
+    @Query(value = "SELECT * FROM Turno t WHERE t.email_usuario = :emailUsuario " +
+            "AND (t.fecha > :fecha OR (t.fecha = :fecha AND t.hora >= :hora))",
+            nativeQuery = true)
+    List<Turno> findTurnosFuturosUsuario(
+            @Param("emailUsuario") String emailUsuario,
+            @Param("fecha") String fecha,
+            @Param("hora") String hora
+    );
+
     @Query(value = "SELECT * FROM Turno t WHERE t.email_negocio = :emailNegocio " +
                     "AND (t.fecha < :fecha OR (t.fecha = :fecha AND t.hora < :hora))",
             nativeQuery = true)
-    List<Turno> findTurnosHistoricos(
+    List<Turno> findTurnosHistoricosNegocio(
             @Param("emailNegocio") String emailNegocio,
             @Param("fecha") String fecha,
             @Param("hora") String hora
@@ -29,7 +47,7 @@ public interface TurnoRepository extends JpaRepository<Turno, Long> {
     @Query(value = "SELECT * FROM Turno t WHERE t.email_negocio = :emailNegocio " +
                     "AND (t.fecha > :fecha OR (t.fecha = :fecha AND t.hora >= :hora))",
             nativeQuery = true)
-    List<Turno> findTurnosFuturos(
+    List<Turno> findTurnosFuturosNegocio(
             @Param("emailNegocio") String emailNegocio,
             @Param("fecha") String fecha,
             @Param("hora") String hora

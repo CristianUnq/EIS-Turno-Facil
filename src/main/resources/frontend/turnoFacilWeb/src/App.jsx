@@ -10,6 +10,7 @@ import MisTurnos from './components/MisTurnos';
 import TurnosNegocio from './components/TurnosNegocio';
 import './styles/global.css'
 import TurnosHistoricos from './components/TurnosHistoricos';
+import MisTurnosHistoricos from './components/MisTurnosHistoricos';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/misturnosuser" element={<MisTurnos />}/>
         <Route path="/turnosNegocio" element={<TurnosNegocio />}/>
         <Route path="/turnosHistoricos" element={<TurnosHistoricos />}/>
+        <Route path="/turnosHistoricosUsuario" element={<MisTurnosHistoricos />}/>
       </Routes>
     </Router>
   );
