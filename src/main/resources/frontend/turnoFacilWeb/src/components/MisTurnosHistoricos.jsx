@@ -30,18 +30,11 @@ const MisTurnos = () => {
     fetchTurnos();
   }, []);
 
-  const cancelarTurno = (id) => {
-    const confirmacion = window.confirm('¿Estás seguro de que querés cancelar este turno?');
-    if (confirmacion) {
-      setTurnos(turnos.filter((t) => t.id !== id));
-    }
-  };
-
   return (
     <>
       <Header />
       <div className={styles.container}>
-        <h2 className={styles.titulo}>Mis Turnos Reservados</h2>
+        <h2 className={styles.titulo}>Historial de Turnos</h2>
         {loading ? (
           <p className={styles.cargando}>Cargando turnos...</p>
         ) : turnos.length === 0 ? (
@@ -59,12 +52,6 @@ const MisTurnos = () => {
                     {" " + turno.hora.slice(0,5)}
                   </span>
                 </div>
-                <button
-                  className={styles.botonCancelar}
-                  onClick={() => cancelarTurno(turno.id)}
-                >
-                  Cancelar
-                </button>
               </li>
             ))}
           </ul>

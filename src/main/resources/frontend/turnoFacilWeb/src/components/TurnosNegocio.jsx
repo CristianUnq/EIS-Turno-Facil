@@ -58,6 +58,7 @@ const MisTurnosNegocio = () => {
             <div className={styles.cardContenido}>
               <div className={styles.calendario}>
                 <DatePicker
+                  minDate={new Date()}
                   selected={fechaSeleccionada}
                   onChange={(date) => setFechaSeleccionada(date)}
                   dateFormat="dd/MM/yyyy"

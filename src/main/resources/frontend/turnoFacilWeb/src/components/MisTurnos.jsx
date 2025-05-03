@@ -76,7 +76,7 @@ const MisTurnos = () => {
                   className={styles.botonCancelar}
                   onClick={() => navigate('/turnosHistoricosUsuario')}
                 >
-                  Historicos
+                  Historial de Turnos
                 </button>
       </div>
     </>

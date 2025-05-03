@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from "../styles/registroUsuario.module.css";
 import { Info } from 'lucide-react';
 import Header from './Header';
+import { useNavigate } from 'react-router-dom';
 
 const RegistroUsuario = () => {
   const [formulario, setFormulario] = useState({
@@ -14,6 +15,7 @@ const RegistroUsuario = () => {
     confirmarcontrasenia: '',
     isNegocio: false
    });
+   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,7 +40,10 @@ const RegistroUsuario = () => {
       if (res.ok) return res.text();
       throw new Error("Registro fallido");
     })
-    .then(msg => alert("✅ " + msg))
+    .then(msg => { 
+      alert("✅ " + msg)
+      navigate("/login");
+    })
     .catch(err => alert("❌ " + err.message));
   };
 
