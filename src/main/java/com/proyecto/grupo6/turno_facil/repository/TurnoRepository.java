@@ -14,22 +14,25 @@ import java.util.List;
 
 public interface TurnoRepository extends JpaRepository<Turno, Long> {
     List<Turno> findAllByEmailUsuario(String emailUsuario);
+
     List<Turno> findAllByEmailNegocio(String emailNegocio);
 
-    @Query("SELECT t FROM Turno t WHERE t.emailNegocio = :emailNegocio " +
-            "AND CAST(t.fecha as string) < CAST(:fecha as string) AND CAST(t.hora as string) < CAST(:hora as string)")
+    @Query(value = "SELECT * FROM Turno t WHERE t.email_negocio = :emailNegocio " +
+                    "AND (t.fecha < :fecha OR (t.fecha = :fecha AND t.hora < :hora))",
+            nativeQuery = true)
     List<Turno> findTurnosHistoricos(
             @Param("emailNegocio") String emailNegocio,
-            @Param("fecha") LocalDate fecha,
-            @Param("hora") LocalTime hora
+            @Param("fecha") String fecha,
+            @Param("hora") String hora
     );
 
-    @Query("SELECT t FROM Turno t WHERE t.emailNegocio = :emailNegocio " +
-            "AND CAST(t.fecha as string) >= CAST(:fecha as string) AND CAST(t.hora as string) >= CAST(:hora as string)")
+    @Query(value = "SELECT * FROM Turno t WHERE t.email_negocio = :emailNegocio " +
+                    "AND (t.fecha > :fecha OR (t.fecha = :fecha AND t.hora >= :hora))",
+            nativeQuery = true)
     List<Turno> findTurnosFuturos(
             @Param("emailNegocio") String emailNegocio,
-            @Param("fecha") LocalDate fecha,
-            @Param("hora") LocalTime hora
+            @Param("fecha") String fecha,
+            @Param("hora") String hora
     );
 
 }

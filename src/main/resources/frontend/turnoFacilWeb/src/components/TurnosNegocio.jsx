@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../styles/MisTurnos.module.css';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import styles from '../styles/MisTurnosNegocio.module.css';
 import Header from './Header';
-import { useNavigate } from 'react-router-dom';
 
-const TurnosNegocio = () => {
+const MisTurnosNegocio = () => {
   const [turnos, setTurnos] = useState([]);
+  const [fechaSeleccionada, setFechaSeleccionada] = useState(new Date());
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTurnos = async () => {
@@ -32,55 +33,77 @@ const TurnosNegocio = () => {
     fetchTurnos();
   }, []);
 
+  const formatearFecha = (fecha) =>
+    fecha.toISOString().split('T')[0]; // yyyy-mm-dd
+
+  const turnosFiltrados = turnos.filter(
+    (t) => t.fecha === formatearFecha(fechaSeleccionada)
+  );
   const cancelarTurno = (id) => {
     const confirmacion = window.confirm('¿Estás seguro de que querés cancelar este turno?');
     if (confirmacion) {
       setTurnos(turnos.filter((t) => t.id !== id));
     }
   };
-
   return (
     <>
       <Header />
       <div className={styles.container}>
-        <h2 className={styles.titulo}>Mis Turnos Reservados</h2>
+        <h2 className={styles.titulo}>Mis turnos</h2>
+
         {loading ? (
           <p className={styles.cargando}>Cargando turnos...</p>
-        ) : turnos.length === 0 ? (
-          <p className={styles.noTurnos}>No tenés turnos reservados.</p>
         ) : (
-          <ul className={styles.lista}>
-            {turnos.map((turno) => (
-              <li key={turno.id} className={styles.turno}>
-                <div className={styles.info}>
-                  <span className={styles.servicio}>{turno.nombreNegocio}</span>
-                  <span className={styles.fecha}>
-                    {new Date(turno.fecha).toLocaleString('es-AR', {
-                      dateStyle: 'long'
-                    })}
-                    {" " + turno.hora.slice(0,5)}
-                  </span>
-                </div>
-                <button
+          <div className={styles.cardTurnos}>
+            <div className={styles.cardContenido}>
+              <div className={styles.calendario}>
+                <DatePicker
+                  selected={fechaSeleccionada}
+                  onChange={(date) => setFechaSeleccionada(date)}
+                  dateFormat="dd/MM/yyyy"
+                  inline
+                />
+              </div>
+
+              <div className={styles.turnosDelDia}>
+                <h3 className={styles.subtitulo}>
+                  {fechaSeleccionada.toLocaleDateString('es-AR', {
+                    weekday: 'long',
+                    day: 'numeric',
+                    month: 'long'
+                  })}
+                </h3>
+
+                {turnosFiltrados.length === 0 ? (
+                  <p>No hay turnos agendados para este día.</p>
+                ) : (
+                  <ul className={styles.lista}>
+                    {turnosFiltrados.map((turno) => (
+                      <li key={turno.id} className={styles.turno}>
+                        <div className={styles.info}>
+                          <span className={styles.hora}>{turno.hora}</span>
+                          <span className={styles.nombre}>{turno.nombreCliente}</span>
+                        </div>
+                        <a
                   className={styles.botonCancelar}
                   onClick={() => cancelarTurno(turno.id)}
-                >
-                  Cancelar
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
+                > Cancelar
+                </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
 
-        <button
-                  className={styles.botonCancelar}
-                  onClick={() => navigate('/turnosHistoricos')}
-                >
-                  Turnos Historicos
-                </button>
+            <div className={styles.botonVolverContainer}>
+              <a href="/turnosHistoricos" className={styles.botonVolver}>Ver historial de turnos</a>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
 };
 
-export default TurnosNegocio;
+export default MisTurnosNegocio;

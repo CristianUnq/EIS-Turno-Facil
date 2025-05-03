@@ -53,7 +53,7 @@ const TurnosHistoricos = () => {
                 <div className={styles.info}>
                   <span className={styles.servicio}>{turno.nombreNegocio}</span>
                   <span className={styles.fecha}>
-                    {new Date(turno.fecha).toLocaleString('es-AR', {
+                    {new Date(turno.fecha + 'T03:00:00').toLocaleString('es-AR', {
                       dateStyle: 'long'
                     })}
                     {" " + turno.hora.slice(0,5)}

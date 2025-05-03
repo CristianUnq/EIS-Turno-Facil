@@ -39,7 +39,7 @@ public class TurnoController {
 
         LocalDate fechaActual = LocalDate.now();
         LocalTime horaActual = LocalTime.now();
-        List<Turno> turnosFuturos = turnoRepository.findTurnosFuturos(email, fechaActual, horaActual);
+        List<Turno> turnosFuturos = turnoRepository.findTurnosFuturos(email, fechaActual.toString(), horaActual.toString());
         if(!turnosFuturos.isEmpty()){
             return ResponseEntity.ok(turnosFuturos);
         }
@@ -51,7 +51,7 @@ public class TurnoController {
 
         LocalDate fechaActual = LocalDate.now();
         LocalTime horaActual = LocalTime.now();
-        List<Turno> turnosHistoricos = turnoRepository.findTurnosHistoricos(email, fechaActual, horaActual);
+        List<Turno> turnosHistoricos = turnoRepository.findTurnosHistoricos(email, fechaActual.toString(), horaActual.toString());
         if(!turnosHistoricos.isEmpty()){
             return ResponseEntity.ok(turnosHistoricos);
         }
