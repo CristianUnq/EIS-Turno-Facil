@@ -132,7 +132,7 @@ function FormTurno() {
       const emailNegocio = getNegocio(negocioSeleccionado)?.email;
       if (!emailNegocio) return;
   
-      const response = await fetch(`/api/turnos/negocio?email=${emailNegocio}`);
+      const response = await fetch(`/api/turnosFuturos/negocio?email=${emailNegocio}`);
       if (!response.ok) return;
 
       const turnosNegocio = await response.json();
