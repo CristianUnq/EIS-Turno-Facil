@@ -71,4 +71,16 @@ public class TurnoController {
         }
         return ResponseEntity.badRequest().body("No hay turnos agendados para el negocio");
     }
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteTurnosUsuario(@RequestParam Long id){
+
+        if(turnoRepository.existsById(id)){
+            turnoRepository.deleteById(id);
+            return ResponseEntity.ok("Su turno se ha cancelado");
+        }
+
+        return ResponseEntity.badRequest().body("No se ha encontrado el turno");
+    }
+
+
 }

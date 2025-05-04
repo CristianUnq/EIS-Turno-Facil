@@ -31,12 +31,32 @@ const MisTurnos = () => {
     
     fetchTurnos();
   }, []);
+ 
+ 
+
+const removerTurno = async (id) => {
+  try {
+    const response = await fetch(`/api/delete?id=${id}`, {
+      method: "DELETE"
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al cancelar el turno");
+    }
+
+    console.log("Turno cancelado correctamente");
+  } catch (error) {
+    console.error("Error al eliminar el turno:", error);
+  }
+};
 
   const cancelarTurno = (id) => {
     const confirmacion = window.confirm('¿Estás seguro de que querés cancelar este turno?');
     if (confirmacion) {
+      removerTurno(id);
       setTurnos(turnos.filter((t) => t.id !== id));
-    }
+      
+     }
   };
 
   return (

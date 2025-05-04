@@ -33,6 +33,22 @@ const MisTurnosNegocio = () => {
     fetchTurnos();
   }, []);
 
+  const removerTurno = async (id) => {
+    try {
+      const response = await fetch(`/api/delete?id=${id}`, {
+        method: "DELETE"
+      });
+  
+      if (!response.ok) {
+        throw new Error("Error al cancelar el turno");
+      }
+  
+      console.log("Turno cancelado correctamente");
+    } catch (error) {
+      console.error("Error al eliminar el turno:", error);
+    }
+  };
+  
   const formatearFecha = (fecha) =>
     fecha.toISOString().split('T')[0]; // yyyy-mm-dd
 
@@ -42,8 +58,10 @@ const MisTurnosNegocio = () => {
   const cancelarTurno = (id) => {
     const confirmacion = window.confirm('¿Estás seguro de que querés cancelar este turno?');
     if (confirmacion) {
+      removerTurno(id);
       setTurnos(turnos.filter((t) => t.id !== id));
     }
+    
   };
   return (
     <>
@@ -84,10 +102,10 @@ const MisTurnosNegocio = () => {
                         <div className={styles.info}>
                           <span className={styles.hora}>{turno.hora}</span>
                           <span className={styles.nombre}>{turno.nombreCliente}</span>
+                          
                         </div>
-                        <a
-                  className={styles.botonCancelar}
-                  onClick={() => cancelarTurno(turno.id)}
+                        <a className={styles.botonCancelar}
+                      onClick={() => cancelarTurno(turno.id)}
                 > Cancelar
                 </a>
                       </li>

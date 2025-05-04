@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/MisTurnos.module.css';
+import style from '../styles/MisTurnosNegocio.module.css';
 import Header from './Header';
 
 const TurnosHistoricos = () => {
@@ -57,6 +58,12 @@ const TurnosHistoricos = () => {
           </ul>
         )}
       </div>
+      <div className={style.botonVolverContainer}>
+             
+      <button onClick={() => window.history.back()}>
+            Volver
+      </button>
+            </div>
     </>
   );
 };
