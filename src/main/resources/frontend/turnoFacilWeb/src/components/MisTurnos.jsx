@@ -44,7 +44,7 @@ const removerTurno = async (id) => {
       throw new Error("Error al cancelar el turno");
     }
 
-    console.log("Turno cancelado correctamente");
+    alert("Turno cancelado con éxito");
   } catch (error) {
     console.error("Error al eliminar el turno:", error);
   }

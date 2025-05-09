@@ -23,6 +23,10 @@ public class Turno {
 
     private String emailNegocio;
 
+    private boolean recordatorioEnviado1Dia = false;
+
+    private boolean recordatorioEnviado2Horas = false;
+
     public Turno(){
 
     }
@@ -82,5 +86,21 @@ public class Turno {
 
     public void setEmailNegocio(String emailNegocio) {
         this.emailNegocio = emailNegocio;
+    }
+
+    public boolean isRecordatorioEnviado1Dia() {
+        return recordatorioEnviado1Dia;
+    }
+
+    public boolean isRecordatorioEnviado2Horas() {
+        return recordatorioEnviado2Horas;
+    }
+
+    public void setRecordatorioEnviado1Dia(boolean recordatorioEnviado1Dia) {
+        this.recordatorioEnviado1Dia = recordatorioEnviado1Dia;
+    }
+
+    public void setRecordatorioEnviado2Horas(boolean recordatorioEnviado2Horas) {
+        this.recordatorioEnviado2Horas = recordatorioEnviado2Horas;
     }
 }
