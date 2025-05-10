@@ -118,6 +118,9 @@ const MisTurnosNegocio = () => {
             <div className={styles.botonVolverContainer}>
               <a href="/turnosHistoricos" className={styles.botonVolver}>Ver historial de turnos</a>
             </div>
+            <div className={styles.botonVolverContainer}>
+              <a href="/editarDatosNegocio" className={styles.botonVolver}>Mis Datos</a>
+            </div>
           </div>
         )}
       </div>

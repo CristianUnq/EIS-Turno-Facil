@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -11,6 +12,7 @@ import TurnosNegocio from './components/TurnosNegocio';
 import './styles/global.css'
 import TurnosHistoricos from './components/TurnosHistoricos';
 import MisTurnosHistoricos from './components/MisTurnosHistoricos';
+import EditarDatosNegocio from './components/EditarDatosNegocio';
 
 function App() {
   return (
@@ -25,6 +27,7 @@ function App() {
         <Route path="/turnosNegocio" element={<TurnosNegocio />}/>
         <Route path="/turnosHistoricos" element={<TurnosHistoricos />}/>
         <Route path="/turnosHistoricosUsuario" element={<MisTurnosHistoricos />}/>
+        <Route path="/editarDatosNegocio" element={<EditarDatosNegocio />}/>
       </Routes>
     </Router>
   );
