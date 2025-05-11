@@ -132,7 +132,6 @@ const RegistroNegocio = () => {
           <p><strong>Horario:</strong> {formulario.horaDesde} a {formulario.horaHasta}</p>
         </div>
 
-        <button type="submit" >Guardar</button>
 {/*  A PARTIR DE ACA, ESTA SEGUN EL HANDLEGUARDAR QUE HICE, PODES REEMPLAZARLO O ARREGLARLO COMO QUIERAS
        <button type="button" onClick={handleGuardar} className={styles.button}>Guardar</button>
        {horariosGuardados && (
@@ -142,13 +141,14 @@ const RegistroNegocio = () => {
                        <p>{horariosGuardados.horas}</p>
                      </div>
                    )}*/}
+      <div className={styles.centeredButtonBox}>
+                <button type="submit"className={styles.button}>Registrarme</button>
+       </div>
       </div>
       </form>
-       <div className={styles.centeredButtonBox}>
-                <button type="submit"className={styles.button}>Registrarme</button>
-              </div>
-            </div>
+      </div>
     </div>
+    
   );
 };
 
