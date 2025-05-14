@@ -32,6 +32,29 @@ public class Usuario {
 
     private Boolean isNegocio;
 
+    public Usuario(Long id, String nombre, String apellido, String nombreNegocio, String dni, String direccion,
+            String telefono, String email, String contrasenia, Integer duracionTurno, String diasDeAtencion,
+            Boolean isNegocio) {
+        this.id = id;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.nombreNegocio = nombreNegocio;
+        this.dni = dni;
+        this.direccion = direccion;
+        this.telefono = telefono;
+        this.email = email;
+        this.contrasenia = contrasenia;
+        this.duracionTurno = duracionTurno;
+        this.diasDeAtencion = diasDeAtencion;
+        this.isNegocio = isNegocio;
+    }
+
+
+
+    public Usuario(){}
+
+    
+
     public Long getId() {
         return id;
     }
