@@ -4,6 +4,7 @@ import com.proyecto.grupo6.turno_facil.models.Usuario;
 import com.proyecto.grupo6.turno_facil.repository.UsuarioRepository;
 import com.proyecto.grupo6.turno_facil.springSecurity.UsuarioDetails;
 import com.proyecto.grupo6.turno_facil.controllers.dto.TurnoDTO;
+import com.proyecto.grupo6.turno_facil.controllers.dto.UsuarioDTO;
 import com.proyecto.grupo6.turno_facil.repository.TurnoRepository;
 
 import jakarta.servlet.http.HttpSession;
@@ -60,11 +61,12 @@ public class AuthController {
 
             SecurityContext context= SecurityContextHolder.getContext();
             context.setAuthentication(auth);
-            UsuarioDetails usuario=(UsuarioDetails)context.getAuthentication().getPrincipal();
-            System.out.println(usuario);
+            UsuarioDetails usuarioDetails=(UsuarioDetails)context.getAuthentication().getPrincipal();
+            Usuario usuario= usuarioDetails.getUsuario();
+            UsuarioDTO usuarioDTO= new UsuarioDTO(usuario);
 
-            System.out.println(usuario.getUsername());
-            return ResponseEntity.ok(usuario);
+            System.out.println(usuarioDTO);
+            return ResponseEntity.ok(usuarioDTO);
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales incorrectas");
         }

@@ -11,7 +11,7 @@ const TurnosHistoricos = () => {
     const fetchTurnos = async () => {
       setLoading(true);
       try {
-        const email = localStorage.getItem("user");
+        const email = JSON.parse(localStorage.getItem("user"))['email'];
         const response = await fetch(`/api/turnosHistoricos/negocio?email=${email}`);
         
         if (!response.ok) {
@@ -45,7 +45,7 @@ const TurnosHistoricos = () => {
             {turnos.map((turno) => (
               <li key={turno.id} className={styles.turno}>
                 <div className={styles.info}>
-                  <span className={styles.servicio}>{turno.emailUsuario}</span>
+                  <span className={styles.servicio}>{turno.usuario.nombre} {turno.usuario.apellido}, {turno.usuario.email} </span>
                   <span className={styles.fecha}>
                     {new Date(turno.fecha + 'T03:00:00').toLocaleString('es-AR', {
                       dateStyle: 'long'

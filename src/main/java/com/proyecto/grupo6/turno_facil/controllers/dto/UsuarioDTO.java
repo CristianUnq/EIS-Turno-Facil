@@ -23,7 +23,6 @@ public class UsuarioDTO{
     
     @JsonCreator
     public UsuarioDTO (Usuario usuario){
-        this.id=usuario.getId();
         this.nombre=usuario.getNombre();
         this.apellido=usuario.getApellido();
         this.nombreNegocio=usuario.getNombreNegocio();
@@ -41,6 +40,6 @@ public class UsuarioDTO{
     }
 
     public Usuario aModelo(){
-        return new Usuario(id,nombre,apellido,nombreNegocio,dni,direccion,telefono,email,null,duracionTurno,diasDeAtencion,isNegocio);
+        return new Usuario(nombre,apellido,nombreNegocio,dni,direccion,telefono,email,null,duracionTurno,diasDeAtencion,isNegocio);
     }
 }

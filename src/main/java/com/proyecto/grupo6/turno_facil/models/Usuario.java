@@ -1,14 +1,12 @@
 package com.proyecto.grupo6.turno_facil.models;
 
+import java.io.Serializable;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Usuario")
-public class Usuario {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Usuario implements Serializable {
 
     private String nombre;
 
@@ -22,6 +20,7 @@ public class Usuario {
 
     private String telefono;
 
+    @Id
     private String email;
 
     private String contrasenia;
@@ -32,10 +31,9 @@ public class Usuario {
 
     private Boolean isNegocio;
 
-    public Usuario(Long id, String nombre, String apellido, String nombreNegocio, String dni, String direccion,
+    public Usuario(String nombre, String apellido, String nombreNegocio, String dni, String direccion,
             String telefono, String email, String contrasenia, Integer duracionTurno, String diasDeAtencion,
             Boolean isNegocio) {
-        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.nombreNegocio = nombreNegocio;
@@ -52,16 +50,6 @@ public class Usuario {
 
 
     public Usuario(){}
-
-    
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;

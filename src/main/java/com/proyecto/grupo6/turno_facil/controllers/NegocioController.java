@@ -1,5 +1,6 @@
 package com.proyecto.grupo6.turno_facil.controllers;
 
+import com.proyecto.grupo6.turno_facil.controllers.dto.UsuarioDTO;
 import com.proyecto.grupo6.turno_facil.models.Usuario;
 import com.proyecto.grupo6.turno_facil.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ public class NegocioController {
     public ResponseEntity<?> getNegocios() {
         List<Usuario> users = usuarioRepository.findAll();
         if(!users.isEmpty()){
-            List<Usuario> negocios = (List<Usuario>) users.stream()
-                    .filter(u -> u.isNegocio()).collect(Collectors.toList());
+            List<UsuarioDTO> negocios = (List<UsuarioDTO>) users.stream()
+                    .filter(u -> u.isNegocio()).map(u->new UsuarioDTO(u)).collect(Collectors.toList());
             return ResponseEntity.ok(negocios);
         }
         return ResponseEntity.badRequest().body("No se encontraron negocios registrados");

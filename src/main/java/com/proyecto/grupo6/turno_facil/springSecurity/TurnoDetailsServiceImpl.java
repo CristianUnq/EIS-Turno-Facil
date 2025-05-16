@@ -26,12 +26,12 @@ public class TurnoDetailsServiceImpl implements TurnoDetailsService{
 
     @Override
     public List<Turno> recuperarTurnosUsuario(String emailUsuario) {
-        return turnoRepository.findAllByEmailUsuario(emailUsuario);
+        return turnoRepository.findAllByUsuarioEmail(emailUsuario);
     }
 
     @Override
     public List<Turno> recuperarTurnosNegocio(String emailNegocio) {
-        return turnoRepository.findAllByEmailNegocio(emailNegocio);
+        return turnoRepository.findAllByNegocioEmail(emailNegocio);
     }
 
 

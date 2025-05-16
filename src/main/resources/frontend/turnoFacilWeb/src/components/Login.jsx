@@ -21,7 +21,8 @@ function Login() {
         var user= await res.json().then(object=>object);
         console.log(user);
         
-        localStorage.setItem('user', user.username);
+        localStorage.setItem('user', JSON.stringify(user));
+        
         if (user.isNegocio) {
           navigate('/turnosNegocio');
         } else {

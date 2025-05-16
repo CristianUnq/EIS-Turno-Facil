@@ -13,7 +13,7 @@ const MisTurnosNegocio = () => {
     const fetchTurnos = async () => {
       setLoading(true);
       try {
-        const email = localStorage.getItem("user");
+        const email = JSON.parse(localStorage.getItem("user"))['email'];
         const response = await fetch(`/api/turnosFuturos/negocio?email=${email}`);
         
         if (!response.ok) {
@@ -101,7 +101,7 @@ const MisTurnosNegocio = () => {
                       <li key={turno.id} className={styles.turno}>
                         <div className={styles.info}>
                           <span className={styles.hora}>{turno.hora}</span>
-                          <span className={styles.nombre}>{turno.emailUsuario}</span>
+                          <span className={styles.nombre}>{turno.usuario.nombre} {turno.usuario.apellido}, {turno.usuario.email} </span>
                           
                         </div>
                         <a className={styles.botonCancelar}

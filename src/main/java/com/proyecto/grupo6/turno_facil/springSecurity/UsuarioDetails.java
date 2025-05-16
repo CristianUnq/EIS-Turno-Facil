@@ -45,4 +45,8 @@ public class UsuarioDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() { return true; }
+
+    public Usuario getUsuario(){
+        return usuario;
+    }
 }

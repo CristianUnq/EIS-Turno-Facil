@@ -17,11 +17,13 @@ public class Turno {
 
     private LocalTime hora;
 
-    private String nombreNegocio;
+    @ManyToOne
+    @JoinColumn(name = "email_usuario", referencedColumnName = "email")
+    private Usuario usuario;
 
-    private String emailUsuario;
-
-    private String emailNegocio;
+    @ManyToOne
+    @JoinColumn(name = "email_negocio", referencedColumnName = "email")
+    private Usuario negocio;
 
     private boolean recordatorioEnviado1Dia = false;
 
@@ -31,13 +33,12 @@ public class Turno {
 
     }
 
-    public Turno(Long id, LocalDate fecha, LocalTime hora,String nombreNegocio, String emailUsuario, String emailNegocio){
+    public Turno(Long id, LocalDate fecha, LocalTime hora,Usuario negocio, Usuario usuario){
         this.id=id;
         this.fecha=fecha;
         this.hora=hora;
-        this.nombreNegocio=nombreNegocio;
-        this.emailUsuario=emailUsuario;
-        this.emailNegocio=emailNegocio;
+        this.usuario=usuario;
+        this.negocio=negocio;
     }
 
     public Long getId() {
@@ -64,28 +65,13 @@ public class Turno {
         this.hora = hora;
     }
 
-    public String getNombreNegocio(){
-        return this.nombreNegocio;
+
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setNombreNegocio(String nombre){
-        this.nombreNegocio = nombre;
-    }
-
-    public String getEmailUsuario() {
-        return emailUsuario;
-    }
-
-    public String getEmailNegocio() {
-        return emailNegocio;
-    }
-
-    public void setEmailUsuario(String emailUsuario) {
-        this.emailUsuario = emailUsuario;
-    }
-
-    public void setEmailNegocio(String emailNegocio) {
-        this.emailNegocio = emailNegocio;
+    public Usuario getNegocio() {
+        return negocio;
     }
 
     public boolean isRecordatorioEnviado1Dia() {

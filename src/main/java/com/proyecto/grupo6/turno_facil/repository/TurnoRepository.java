@@ -13,9 +13,9 @@ import java.time.LocalTime;
 import java.util.List;
 
 public interface TurnoRepository extends JpaRepository<Turno, Long> {
-    List<Turno> findAllByEmailUsuario(String emailUsuario);
+    List<Turno> findAllByUsuarioEmail(String email_usuario);
 
-    List<Turno> findAllByEmailNegocio(String emailNegocio);
+    List<Turno> findAllByNegocioEmail(String email_negocio);
 
     @Query(value = "SELECT * FROM Turno t WHERE t.email_usuario = :emailUsuario " +
             "AND (t.fecha < :fecha OR (t.fecha = :fecha AND t.hora < :hora))",

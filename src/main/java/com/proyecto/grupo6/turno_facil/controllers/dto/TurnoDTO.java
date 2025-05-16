@@ -10,21 +10,18 @@ import com.proyecto.grupo6.turno_facil.models.Turno;
 public class TurnoDTO{
     public Long id;
     public LocalDate fecha;
-
     @JsonFormat(pattern ="HH:mm")
     public LocalTime hora;
-    public String nombreNegocio;
-    public String emailUsuario;
-    public String emailNegocio;
+    public UsuarioDTO negocio;
+    public UsuarioDTO usuario;
 
     @JsonCreator
     public TurnoDTO (Turno turno){
         this.id=turno.getId();
         this.fecha=turno.getFecha();
         this.hora=turno.getHora();
-        this.nombreNegocio=turno.getNombreNegocio();
-        this.emailNegocio=turno.getEmailNegocio();
-        this.emailUsuario=turno.getEmailUsuario();
+        this.negocio=new UsuarioDTO(turno.getNegocio());
+        this.usuario=new UsuarioDTO(turno.getUsuario());
     }
 
     public static TurnoDTO desdeModelo(Turno turno){
@@ -32,6 +29,6 @@ public class TurnoDTO{
     }
 
     public Turno aModelo(){
-        return new Turno(this.id,this.fecha,this.hora,this.nombreNegocio,this.emailUsuario,this.emailNegocio);
+        return new Turno(this.id,this.fecha,this.hora,this.negocio.aModelo(),this.usuario.aModelo());
     }
 }

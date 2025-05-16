@@ -25,11 +25,17 @@ function FormTurno() {
   registerLocale("es",es);
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log("sending: ",(localStorage.getItem('user')));
+    
     fetch("/api/auth/sacarTurno", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({id:null,emailUsuario: localStorage.getItem('user'), nombreNegocio: negocioSeleccionado, emailNegocio: getNegocio(negocioSeleccionado).email, fecha:fechaSeleccionada, hora:horaSeleccionada})
+      body: JSON.stringify({id:null,
+                            usuario: JSON.parse(localStorage.getItem('user')), 
+                            negocio: getNegocio(negocioSeleccionado), 
+                            fecha:fechaSeleccionada, 
+                            hora:horaSeleccionada})
     })
     .then(async res => {
       if (res.ok) {

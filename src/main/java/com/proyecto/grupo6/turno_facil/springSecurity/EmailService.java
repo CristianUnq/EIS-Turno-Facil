@@ -30,13 +30,13 @@ public class EmailService {
 
     private void enviar(String asunto, Turno turno, String template) {
         SimpleMailMessage mensaje = new SimpleMailMessage();
-        String direccionNegocio = usuario.direccionNegocio(turno.getEmailNegocio()).orElse("");
+        String direccionNegocio = usuario.direccionNegocio(turno.getNegocio().getEmail()).orElse("");
 
         mensaje.setFrom("turnofacil.notif@gmail.com");
-        mensaje.setTo(turno.getEmailUsuario());
+        mensaje.setTo(turno.getUsuario().getEmail());
         mensaje.setSubject(asunto);
         mensaje.setText(MessageFormat.format(template,
-                turno.getFecha(), turno.getHora(), turno.getNombreNegocio(), direccionNegocio));
+                turno.getFecha(), turno.getHora(), turno.getNegocio().getNombreNegocio(), direccionNegocio));
 
         mailSender.send(mensaje);
         System.out.println("Mail enviado con éxito");
