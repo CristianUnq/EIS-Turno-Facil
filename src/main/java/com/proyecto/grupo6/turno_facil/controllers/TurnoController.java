@@ -3,6 +3,9 @@ package com.proyecto.grupo6.turno_facil.controllers;
 import com.proyecto.grupo6.turno_facil.controllers.dto.TurnoDTO;
 import com.proyecto.grupo6.turno_facil.models.Turno;
 import com.proyecto.grupo6.turno_facil.repository.TurnoRepository;
+import com.proyecto.grupo6.turno_facil.springSecurity.EmailService;
+import com.proyecto.grupo6.turno_facil.springSecurity.TurnoDetailsService;
+import com.proyecto.grupo6.turno_facil.springSecurity.TurnoDetailsServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,12 @@ import java.time.LocalTime;
 public class TurnoController {
     @Autowired
     private final TurnoRepository turnoRepository;
+
+    @Autowired
+    private TurnoDetailsServiceImpl turnoService;
+
+    @Autowired
+    private EmailService emailService;
 
     
     public TurnoController(TurnoRepository turnoRepository) {
@@ -72,9 +81,11 @@ public class TurnoController {
         return ResponseEntity.badRequest().body("No hay turnos agendados para el negocio");
     }
     @DeleteMapping("/delete")
-    public ResponseEntity<?> deleteTurnosUsuario(@RequestParam Long id){
+    public ResponseEntity<?> deleteTurnosUsuario(@RequestParam Long id, boolean isNegocio){
 
         if(turnoRepository.existsById(id)){
+            Turno turnoCancelado=turnoService.recuperarTurno(id);
+            emailService.enviarMailAlertaCancelado(turnoCancelado, isNegocio);
             turnoRepository.deleteById(id);
             return ResponseEntity.ok("Su turno se ha cancelado");
         }

@@ -6,12 +6,12 @@ import Header from './Header';
 const MisTurnos = () => {
   const [turnos, setTurnos] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const usuario = JSON.parse(localStorage.getItem("user"));
   useEffect(() => {
     const fetchTurnos = async () => {
       setLoading(true);
       try {
-        const email = JSON.parse(localStorage.getItem("user"))['email'];
+        const email = usuario['email']
         const response = await fetch(`/api/turnosHistoricos/usuario?email=${email}`);
         
         if (!response.ok) {

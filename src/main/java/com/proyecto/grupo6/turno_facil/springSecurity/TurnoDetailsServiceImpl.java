@@ -1,12 +1,15 @@
 package com.proyecto.grupo6.turno_facil.springSecurity;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.proyecto.grupo6.turno_facil.models.Turno;
 import com.proyecto.grupo6.turno_facil.repository.TurnoRepository;
 
+@Service
 public class TurnoDetailsServiceImpl implements TurnoDetailsService{
 
     @Autowired
@@ -39,6 +42,11 @@ public class TurnoDetailsServiceImpl implements TurnoDetailsService{
     public Turno eliminarTurno(Turno turno) {
             // TODO Auto-generated method stub
             throw new UnsupportedOperationException("Unimplemented method 'eliminarTurno'");
+    }
+
+    @Override
+    public Turno recuperarTurno(Long id) throws NoSuchElementException{
+        return turnoRepository.findById(id).get();
     }
 
 }

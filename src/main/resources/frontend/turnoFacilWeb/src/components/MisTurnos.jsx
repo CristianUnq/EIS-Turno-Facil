@@ -7,12 +7,13 @@ const MisTurnos = () => {
   const [turnos, setTurnos] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const usuario = JSON.parse(localStorage.getItem("user"))
 
   useEffect(() => {
     const fetchTurnos = async () => {
       setLoading(true);
       try {
-        const email = JSON.parse(localStorage.getItem("user"))['email'];
+        const email = usuario['email'];
         const response = await fetch(`/api/turnosFuturos/usuario?email=${email}`);
         
         if (!response.ok) {
@@ -36,7 +37,7 @@ const MisTurnos = () => {
 
 const removerTurno = async (id) => {
   try {
-    const response = await fetch(`/api/delete?id=${id}`, {
+    const response = await fetch(`/api/delete?id=${id}&isNegocio=${usuario['isNegocio']}`, {
       method: "DELETE"
     });
 
