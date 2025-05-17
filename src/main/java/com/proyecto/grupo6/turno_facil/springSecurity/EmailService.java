@@ -50,7 +50,7 @@ public class EmailService {
         Usuario usuario = turno.getUsuario();
         String template= enviarAUsuario? "con {2} en {3}":"del usuario "+ usuario.getNombre()+" "+usuario.getApellido()+" con mail "+usuario.getEmail();
   
-        enviar("Recordatorio de turno - turnoFacil", turno,
+        enviar("Cancelación de turno - turnoFacil", turno,
                 "Se ha cancelado el turno del día {0} a las {1}h "+template,
                 destinatario);
     }

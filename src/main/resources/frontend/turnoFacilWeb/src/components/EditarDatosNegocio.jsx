@@ -48,7 +48,7 @@ const EditarDatosNegocio = () => {
   useEffect(() => {
     const fetchDatosNegocio = async () => {
       try {
-        const email = localStorage.getItem("user");
+        const email = JSON.parse(localStorage.getItem("user")).email;
         if (!email) {
           console.error("No se encontró el email en localStorage.");
           return;
@@ -102,7 +102,7 @@ const EditarDatosNegocio = () => {
       })
     };
     
-    const email = localStorage.getItem("user");
+    const email = JSON.parse(localStorage.getItem("user")).email;
 
     fetch(`/api/negocio/actualizarPorEmail?email=${email}`, {
       method: "PUT",
@@ -113,7 +113,10 @@ const EditarDatosNegocio = () => {
         if (!res.ok) throw new Error("Error al actualizar");
         return res.text();
       })
-      .then(msg => alert("✅ Datos actualizados"))
+      .then(msg => {
+        alert("✅ Datos actualizados");
+        navigate("/turnosNegocio");
+       })
       .catch(err => alert("❌ " + err.message));
   };
 
@@ -182,17 +185,6 @@ const EditarDatosNegocio = () => {
           <p><strong>Días:</strong> {formulario.diaDesde} a {formulario.diaHasta}</p>
           <p><strong>Horario:</strong> {formulario.horaDesde} a {formulario.horaHasta}</p>
         </div>
-
-        <button type="submit" >Guardar</button>
-{/*  A PARTIR DE ACA, ESTA SEGUN EL HANDLEGUARDAR QUE HICE, PODES REEMPLAZARLO O ARREGLARLO COMO QUIERAS
-       <button type="button" onClick={handleGuardar} className={styles.button}>Guardar</button>
-       {horariosGuardados && (
-                     <div className={styles.resumen}>
-                       <h4>Días y horarios seleccionados:</h4>
-                       <p>{horariosGuardados.días}</p>
-                       <p>{horariosGuardados.horas}</p>
-                     </div>
-                   )}*/}
       </div>
       </form>
       <div className={styles.centeredButtonBox}>

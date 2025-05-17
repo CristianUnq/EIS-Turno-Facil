@@ -61,12 +61,9 @@ const RegistroUsuario = () => {
                     <input type="text" placeholder="Apellidos" id="apellido" name="apellido" value={formulario.apellido} onChange={handleChange} required />
                 </div>
                 <div className={styles.row}>
-                    <input type="text" placeholder="Número de DNI" id="dni" name="dni" value={formulario.dni} onChange={handleChange} required />
-                    <input type="text" placeholder="Teléfono de contacto" id="telefono" name="telefono" value={formulario.telefono} onChange={handleChange} required />
+                    <input type="text" pattern="[0-9]{7,8}" title="Ingresá un número de DNI válido" placeholder="Número de DNI" id="dni" name="dni" value={formulario.dni} onChange={handleChange} required />
+                    <input type="tel" pattern="[0-9]{8,10}" title="Ingresá un número de teléfono válido" placeholder="Teléfono de contacto" id="telefono" name="telefono" value={formulario.telefono} onChange={handleChange} required />
                 </div>
-{/*                 <div className={styles.row}> */}
-{/*                     <input type="text" id="direccion" name="direccion" value={formulario.direccion} onChange={handleChange} required /> */}
-{/*                 </div> */}
 
                 <div className={styles.row}>
                      <input type="email" placeholder="Correo electrónico" id="email" name="email" value={formulario.email} onChange={handleChange} required />

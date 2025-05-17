@@ -51,14 +51,14 @@ return (
           <form onSubmit={handleSubmit} className={styles.form}>
             <input
               type="email"
-              placeholder="nombre de usuario"
+              placeholder="Correo electrónico"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
             />
             <input
               type="contrasenia"
-              placeholder="contraseña"
+              placeholder="Contraseña"
               value={contrasenia}
               onChange={(e) => setcontrasenia(e.target.value)}
               required
@@ -68,10 +68,9 @@ return (
               <label htmlFor="remember">Recordarme</label>
             </div>
             <button type="submit" className={styles.button}>Iniciar sesión</button>
-            <button type="submit" className={styles.button}>Registrarme</button>
+            <button onClick={() => navigate("/registroUsuario")} className={styles.button}>Registrarme</button>
           </form>
           <div className={styles.links}>
-            <a href="/registroUsuario">Registrarme</a>
             <a href="/registroNegocio">Quiero ofrecer turnos</a>
           </div>
         </div>

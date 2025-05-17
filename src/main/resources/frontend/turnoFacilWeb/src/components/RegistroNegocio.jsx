@@ -84,7 +84,7 @@ const RegistroNegocio = () => {
 
         <input type="text" placeholder="Nombre del negocio" id="nombreNegocio" name="nombreNegocio" value={formulario.nombreNegocio} onChange={handleChange} required />
         <input type="text" id="direccion" placeholder="Dirección" name="direccion" value={formulario.direccion} onChange={handleChange} required />
-        <input type="tel" pattern="[0-9]{10}" title="Ingresá un número de teléfono válido" placeholder="Teléfono" id="telefono" name="telefono" value={formulario.telefono} onChange={handleChange} required />
+        <input type="tel" pattern="[0-9]{8,10}" title="Ingresá un número de teléfono válido" placeholder="Teléfono" id="telefono" name="telefono" value={formulario.telefono} onChange={handleChange} required />
         <input type="email" placeholder="Correo electrónico" id="email" name="email" value={formulario.email} onChange={handleChange} required />
         <input type="password" placeholder="Contraseña" id="contrasenia" name="contrasenia" value={formulario.contrasenia} onChange={handleChange} required />
         <input type="password" placeholder="Contraseña" id="confirmarContrasenia" name="confirmarContrasenia" value={formulario.confirmarContrasenia} onChange={handleChange} required />
@@ -131,21 +131,11 @@ const RegistroNegocio = () => {
           <p><strong>Días:</strong> {formulario.diaDesde} a {formulario.diaHasta}</p>
           <p><strong>Horario:</strong> {formulario.horaDesde} a {formulario.horaHasta}</p>
         </div>
-
-{/*  A PARTIR DE ACA, ESTA SEGUN EL HANDLEGUARDAR QUE HICE, PODES REEMPLAZARLO O ARREGLARLO COMO QUIERAS
-       <button type="button" onClick={handleGuardar} className={styles.button}>Guardar</button>
-       {horariosGuardados && (
-                     <div className={styles.resumen}>
-                       <h4>Días y horarios seleccionados:</h4>
-                       <p>{horariosGuardados.días}</p>
-                       <p>{horariosGuardados.horas}</p>
-                     </div>
-                   )}*/}
-      <div className={styles.centeredButtonBox}>
-                <button type="submit"className={styles.button}>Registrarme</button>
-       </div>
       </div>
       </form>
+      <div className={styles.centeredButtonBox}>
+                <button type="submit"className={styles.button}>Registrarme</button>
+      </div>
       </div>
     </div>
     

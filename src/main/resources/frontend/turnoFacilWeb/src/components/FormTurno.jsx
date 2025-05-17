@@ -233,7 +233,7 @@ function FormTurno() {
       <h2>Reservar turno</h2>
 
       <label>Negocio o Profesional</label>
-      <select defaultValue={"Seleccione un negocio"} value={negocioSeleccionado} onChange={(e) => handleOnChangeNegocioSeleccionado(e.target.value)} required>
+      <select aria-placeholder="Seleccione un negocio" value={negocioSeleccionado} onChange={(e) => handleOnChangeNegocioSeleccionado(e.target.value)} required>
       <option value="" disabled hidden>Seleccione negocio o profesional</option>
         {
           negocios?.map(n => {
