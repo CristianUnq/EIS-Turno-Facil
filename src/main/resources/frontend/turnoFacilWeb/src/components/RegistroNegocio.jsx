@@ -80,62 +80,65 @@ const RegistroNegocio = () => {
           <div className={styles.avatar}> <img src="/avatar.svg" alt="Avatar" className={styles.avatar} /></div>
           <h2 className={styles.title}>Registro de Negocio</h2>
           <form onSubmit={handleSubmit} className={styles.form}>
-            <div className={styles.column}>
-
-        <input type="text" placeholder="Nombre del negocio" id="nombreNegocio" name="nombreNegocio" value={formulario.nombreNegocio} onChange={handleChange} required />
-        <input type="text" id="direccion" placeholder="Dirección" name="direccion" value={formulario.direccion} onChange={handleChange} required />
-        <input type="tel" pattern="[0-9]{8,10}" title="Ingresá un número de teléfono válido" placeholder="Teléfono" id="telefono" name="telefono" value={formulario.telefono} onChange={handleChange} required />
-        <input type="email" placeholder="Correo electrónico" id="email" name="email" value={formulario.email} onChange={handleChange} required />
-        <input type="password" placeholder="Contraseña" id="contrasenia" name="contrasenia" value={formulario.contrasenia} onChange={handleChange} required />
-        <input type="password" placeholder="Contraseña" id="confirmarContrasenia" name="confirmarContrasenia" value={formulario.confirmarContrasenia} onChange={handleChange} required />
-    </div>
+  <div className={styles.formContent}>
     <div className={styles.column}>
-            <input type="number" placeholder="Duración del turno (minutos)" id="duracionTurno" name="duracionTurno" value={formulario.duracionTurno} onChange={handleChange} required />
+      <input type="text" placeholder="Nombre del negocio" id="nombreNegocio" name="nombreNegocio" value={formulario.nombreNegocio} onChange={handleChange} required />
+      <input type="text" id="direccion" placeholder="Dirección" name="direccion" value={formulario.direccion} onChange={handleChange} required />
+      <input type="tel" pattern="[0-9]{8,10}" title="Ingresá un número de teléfono válido" placeholder="Teléfono" id="telefono" name="telefono" value={formulario.telefono} onChange={handleChange} required />
+      <input type="email" placeholder="Correo electrónico" id="email" name="email" value={formulario.email} onChange={handleChange} required />
+      <input type="password" placeholder="Contraseña" id="contrasenia" name="contrasenia" value={formulario.contrasenia} onChange={handleChange} required />
+      <input type="password" placeholder="Contraseña" id="confirmarContrasenia" name="confirmarContrasenia" value={formulario.confirmarContrasenia} onChange={handleChange} required />
+    </div>
 
-       <div className={styles.selectGroup}>
-                     <label>Día desde:</label>
+    <div className={styles.column}>
+      <input type="number" placeholder="Duración del turno (minutos)" id="duracionTurno" name="duracionTurno" value={formulario.duracionTurno} onChange={handleChange} required />
 
-          <select id="diaDesde" name="diaDesde" value={formulario.diaDesde} onChange={handleChange}>
-            {diasSemana.map((dia, index) => <option key={dia}>{dia}</option>)}
-          </select>
-        </div>
-        <div className={styles.selectGroup}>
-           <label>Día hasta:</label>
-          <select id="diaHasta" name="diaHasta" value={formulario.diaHasta} onChange={handleChange}>
-            {diasSemana.map((dia, index) => <option key={dia}>{dia}</option>)}
-          </select>
-        </div>
+      <div className={styles.selectGroup}>
+        <label>Día desde:</label>
+        <select id="diaDesde" name="diaDesde" value={formulario.diaDesde} onChange={handleChange}>
+          {diasSemana.map((dia) => <option key={dia}>{dia}</option>)}
+        </select>
+      </div>
 
+      <div className={styles.selectGroup}>
+        <label>Día hasta:</label>
+        <select id="diaHasta" name="diaHasta" value={formulario.diaHasta} onChange={handleChange}>
+          {diasSemana.map((dia) => <option key={dia}>{dia}</option>)}
+        </select>
+      </div>
 
-        <div className={styles.selectGroup}>
-              <label>Hora desde:</label>
-          <select id="horaDesde" name="horaDesde" value={formulario.horaDesde} onChange={handleChange}>
-            {horarios.map((hora, index) => <option key={hora}>{hora}</option>)}
-          </select>
-        </div>
-        <div className={styles.selectGroup}>
-                        <label>Hora hasta:</label>
-          <select id="horaHasta" name="horaHasta" value={formulario.horaHasta} onChange={handleChange}>
-            {horarios.map((hora, index) => <option key={hora}>{hora}</option>)}
-          </select>
-            <div className={styles.tooltipContainer}>
-                      <Info className={styles.infoIcon} />
-                      <div className={styles.tooltipText}>
-                      </div>
-            </div> 
-        </div>
+      <div className={styles.selectGroup}>
+        <label>Hora desde:</label>
+        <select id="horaDesde" name="horaDesde" value={formulario.horaDesde} onChange={handleChange}>
+          {horarios.map((hora) => <option key={hora}>{hora}</option>)}
+        </select>
+      </div>
 
-        <div >
-          <h3>Previsualización</h3>
-          
-          <p><strong>Días:</strong> {formulario.diaDesde} a {formulario.diaHasta}</p>
-          <p><strong>Horario:</strong> {formulario.horaDesde} a {formulario.horaHasta}</p>
+      <div className={styles.selectGroup}>
+        <label>Hora hasta:</label>
+        <select id="horaHasta" name="horaHasta" value={formulario.horaHasta} onChange={handleChange}>
+          {horarios.map((hora) => <option key={hora}>{hora}</option>)}
+        </select>
+
+        <div className={styles.tooltipContainer}>
+          <Info className={styles.infoIcon} />
+          <div className={styles.tooltipText}></div>
         </div>
       </div>
-      </form>
-      <div className={styles.centeredButtonBox}>
-                <button type="submit"className={styles.button}>Registrarme</button>
+
+      <div>
+        <h3>Previsualización</h3>
+        <p><strong>Días:</strong> {formulario.diaDesde} a {formulario.diaHasta}</p>
+        <p><strong>Horario:</strong> {formulario.horaDesde} a {formulario.horaHasta}</p>
       </div>
+    </div>
+  </div>
+
+  <div className={styles.buttonCenter}>
+    <button type="submit" className={styles.button}>Registrarme</button>
+  </div>
+  </form>
+      
       </div>
     </div>
     
