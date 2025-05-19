@@ -101,7 +101,7 @@ const MisTurnosNegocio = () => {
                       <li key={turno.id} className={styles.turno}>
                         <div className={styles.info}>
                           <span className={styles.hora}>{turno.hora}</span>
-                          <span className={styles.nombre}>{turno.usuario.nombre} {turno.usuario.apellido}, {turno.usuario.email} </span>
+                          <span className={styles.nombre}>{turno.usuario.nombre} {turno.usuario.apellido}</span>
                           
                         </div>
                         <a className={styles.botonCancelar}
