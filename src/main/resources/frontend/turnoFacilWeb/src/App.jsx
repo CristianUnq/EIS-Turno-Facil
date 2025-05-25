@@ -13,6 +13,8 @@ import './styles/global.css'
 import TurnosHistoricos from './components/TurnosHistoricos';
 import MisTurnosHistoricos from './components/MisTurnosHistoricos';
 import EditarDatosNegocio from './components/EditarDatosNegocio';
+import RecuperarContrasenia from './components/RecuperarContrasenia';
+import ResetPassword from './components/ResetPassword';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
         <Route path="/turnosHistoricos" element={<TurnosHistoricos />}/>
         <Route path="/turnosHistoricosUsuario" element={<MisTurnosHistoricos />}/>
         <Route path="/editarDatosNegocio" element={<EditarDatosNegocio />}/>
+        <Route path='/recuperarContrasenia' element={<RecuperarContrasenia/>} />
+        <Route path='/resetPassword' element={<ResetPassword/>} />
       </Routes>
     </Router>
   );

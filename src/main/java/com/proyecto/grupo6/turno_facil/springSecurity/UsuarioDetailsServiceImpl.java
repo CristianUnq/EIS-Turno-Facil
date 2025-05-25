@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsuarioDetailsServiceImpl implements UserDetailsService {
+public class UsuarioDetailsServiceImpl implements UserDetailsService,UserDetailsServiceInterface {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -20,4 +20,19 @@ public class UsuarioDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
         return new UsuarioDetails(usuario);
     }
+
+    @Override
+    public UserDetails recoverUserByRecoveryToken(String token) throws UsernameNotFoundException{
+        Usuario usuario= usuarioRepository.findByrecoveryToken(token)
+                            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+        return new UsuarioDetails(usuario);
+    }
+
+    @Override
+    public void updateUser(Usuario usuario) {
+        usuarioRepository.save(usuario);
+    }
+
+
 }

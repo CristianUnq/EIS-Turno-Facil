@@ -1,6 +1,7 @@
 package com.proyecto.grupo6.turno_facil.models;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 
@@ -30,6 +31,10 @@ public class Usuario implements Serializable {
     private String diasDeAtencion;
 
     private Boolean isNegocio;
+
+    private String recoveryToken;
+
+    private LocalDateTime tokenExpireTime;
 
     public Usuario(String nombre, String apellido, String nombreNegocio, String dni, String direccion,
             String telefono, String email, String contrasenia, Integer duracionTurno, String diasDeAtencion,
@@ -135,5 +140,23 @@ public class Usuario implements Serializable {
 
     public void setIsNegocio(Boolean isNegocio) {
         this.isNegocio = isNegocio;
+    }
+
+
+
+    public void setRecoveryToken(String token) {
+        this.recoveryToken=token;
+    }
+
+
+
+    public void setTokenExpireTime(LocalDateTime expireTime) {
+        this.tokenExpireTime=expireTime;
+    }
+
+
+
+    public LocalDateTime getTokenExpireTime() {
+        return tokenExpireTime;
     }
 }

@@ -11,6 +11,8 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     Optional<Usuario> findByEmail(String email);
+    
+    Optional<Usuario> findByrecoveryToken(String email);
 
     @Query(value = "SELECT direccion FROM usuario u WHERE u.email = :emailNegocio",
             nativeQuery = true)

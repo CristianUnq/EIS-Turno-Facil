@@ -48,13 +48,16 @@ return (
         <div className={styles.loginBox}>
           <img src="/avatar.svg" alt="Avatar" className={styles.avatar} />
           <h2 className={styles.title}>Inicio de sesión</h2>
-          <form onSubmit={handleSubmit} className={styles.form}>
+          <form onSubmit={handleSubmit} className={styles.form} method="POST" action="javascript:void(0)">
             <input
               type="email"
+              name='email'
               placeholder="Correo electrónico"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autocomplete="on"
+              autocompletetype="email"
             />
             <input
               type="contrasenia"
@@ -63,15 +66,14 @@ return (
               onChange={(e) => setcontrasenia(e.target.value)}
               required
             />
-            <div className={styles.checkboxContainer}>
-              <input type="checkbox" id="remember" />
-              <label htmlFor="remember">Recordarme</label>
-            </div>
             <button type="submit" className={styles.button}>Iniciar sesión</button>
             <button onClick={() => navigate("/registroUsuario")} className={styles.button}>Registrarme</button>
           </form>
           <div className={styles.links}>
             <a href="/registroNegocio">Quiero ofrecer turnos</a>
+          </div>
+          <div className={styles.links}>
+              <a href="/recuperarContrasenia">Olvide mi contraseña</a>
           </div>
         </div>
         </div>

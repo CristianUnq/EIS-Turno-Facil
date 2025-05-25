@@ -55,6 +55,15 @@ public class EmailService {
                 destinatario);
     }
 
+    public void enviarMail(String asunto, String msg, String... destinatarios) {
+        SimpleMailMessage mensaje = new SimpleMailMessage();
+         mensaje.setFrom("turnofacil.notif@gmail.com");
+        mensaje.setTo(destinatarios);
+        mensaje.setSubject(asunto);
+        mensaje.setText(msg);
+        mailSender.send(mensaje);
+        System.out.println("Mail de recuperación enviado con éxito");
+    }
 }
 
 
