@@ -4,6 +4,7 @@ import { es } from 'date-fns/locale/es';
 import 'react-datepicker/dist/react-datepicker.css'
 import '../styles/FormTurno.css';
 import { useNavigate } from 'react-router-dom';
+import Searcher from './Searcher';
 
 
 function FormTurno() {
@@ -11,7 +12,9 @@ function FormTurno() {
   const [fechaSeleccionada, setFechaSeleccionada] = useState()
   const [horaSeleccionada, setHoraSeleccionada] = useState("");
   const [negocioSeleccionado, setNegocioSeleccionado] = useState('');
+  const [negociosEncontrados, setNegociosEncontrados] = useState(null);
   const [negocios, setNegocios] = useState(null);
+  const [textoBusqueda, setTextoBusqueda] = useState('');
   const [horariosDelNegocio, setHorariosDelNegocio] = useState([])
   const [turnosOcupados, setTurnosOcupados] = useState([]);
 
@@ -87,7 +90,21 @@ function FormTurno() {
     let negocioActual = getNegocio(negocioNombre);
     let {horaDesde, horaHasta} = JSON.parse(negocioActual.diasDeAtencion);
     setHorariosDelNegocio(generateHorariosDisponibles(horaDesde, horaHasta, negocioActual.duracionTurno))
-  } 
+  }
+  
+  const handleOnChangeSearcher = (nombre) => {
+    setTextoBusqueda(nombre)
+    const nombreNorm = nombre.trim().toUpperCase()
+    if(nombreNorm.length >= 3){
+      const negociosFiltrados = negocios?.filter(n => n?.nombreNegocio?.toUpperCase().includes(nombreNorm))
+      setNegociosEncontrados(negociosFiltrados ?? []);
+    } else {
+      // Si borran texto o escriben menos de 3 caracteres, limpiamos resultados
+      setNegociosEncontrados([])
+      setNegocioSeleccionado(null);
+    }
+   
+  }
   
   const estaEnRangoDeDias = (fecha) => {
     const diasSemana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
@@ -101,11 +118,6 @@ function FormTurno() {
     const indiceDesde = diasSemana.indexOf(diaDesde);
     const indiceHasta = diasSemana.indexOf(diaHasta);
     const indiceActual = diasSemana.indexOf(diaNombre);
-
-    if (indiceDesde === -1 || indiceHasta === -1) {
-      console.error("Día inválido en diasDeAtencion");
-      return false;
-    }
 
     if (indiceDesde <= indiceHasta) {
       return indiceActual >= indiceDesde && indiceActual <= indiceHasta;
@@ -231,20 +243,15 @@ function FormTurno() {
   return (
     <form onSubmit={handleSubmit} className="form-turno">
       <h2>Reservar turno</h2>
+      <label>Negocio o Profesional</label>      
+      <Searcher handleOnChangeSearcher={handleOnChangeSearcher}
+                negociosEncontrados={negociosEncontrados}
+                updateNegocio={handleOnChangeNegocioSeleccionado}
+                textoBusqueda={textoBusqueda} 
+      />
 
-      <label>Negocio o Profesional</label>
-      <select aria-placeholder="Seleccione un negocio" value={negocioSeleccionado} onChange={(e) => handleOnChangeNegocioSeleccionado(e.target.value)} required>
-      <option value="" disabled hidden>Seleccione negocio o profesional</option>
-        {
-          negocios?.map(n => {
-            return (
-              <option key={n.id} value={n.nombreNegocio} >{n.nombreNegocio}</option>
-            )
-          })
-        }
-        
-      </select>
-      {negocioSeleccionado?
+      {negocioSeleccionado && negociosEncontrados.length !== 0 
+      ? 
       (<div>
       <label>Fecha</label>
       

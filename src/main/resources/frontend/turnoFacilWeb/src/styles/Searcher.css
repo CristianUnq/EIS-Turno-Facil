@@ -1,0 +1,27 @@
+.listContainer {
+    border: 2px solid #d7d7e4;
+    border-radius: .5rem;
+    margin-left: 10px;
+    padding: 0;
+}
+
+.negocioItem {
+    cursor: pointer;
+    list-style: none;
+    padding: 10px;
+    margin-bottom: .5rem;
+    margin-top: .2rem;
+}
+
+.negocioItem:hover {
+    background-color: rgb(202, 202, 225);
+    border-radius: .2rem;
+}
+
+.spanDireccion {
+    color: #818192;
+}
+
+p {
+    margin-left: 10px;
+}
