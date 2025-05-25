@@ -92,13 +92,20 @@ const removerTurno = async (id) => {
             ))}
           </ul>
         )}
-
+        <div className={styles.buttonContainer}>
+        <button
+                          className={styles.botonCancelar}
+                          onClick={() => navigate('/turno')}
+                        >
+                          Volver
+                        </button>
         <button
                   className={styles.botonCancelar}
                   onClick={() => navigate('/turnosHistoricosUsuario')}
                 >
                   Historial de Turnos
                 </button>
+        </div>
       </div>
     </>
   );

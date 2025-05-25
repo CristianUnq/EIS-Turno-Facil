@@ -78,4 +78,17 @@
   .botonCancelar:hover {
     background-color: #174663;
   }
-  
+
+  .buttonContainer {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  .buttonContainer button {
+    flex: 1;
+  }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.grupo6.turno_facil.springSecurity.PasswordRecoveryServiceImpl;
+import com.proyecto.grupo6.turno_facil.springSecurity.UsuarioDetailsServiceImpl;
 
 
 @RequestMapping("/api/password")
@@ -20,11 +21,23 @@ public class PasswordRecoveryController {
     PasswordRecoveryServiceImpl recoveryService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    UsuarioDetailsServiceImpl usuarioService;
 
     @PostMapping("/request-reset")
     public ResponseEntity<?> requestReset(@RequestParam String email){
         try{
-            recoveryService.sendResetPasswordEmail(email);
+            usuarioService.loadUserByUsername(email);
+            Thread one = new Thread() {
+            public void run() {
+                try {
+                    recoveryService.sendResetPasswordEmail(email);
+                } catch(Exception v) {
+                    System.out.println(v);
+                }
+                }  
+            };
+            one.start();
         }catch(UsernameNotFoundException e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("El usuario no existe.");
