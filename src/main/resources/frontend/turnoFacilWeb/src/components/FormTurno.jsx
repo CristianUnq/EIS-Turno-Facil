@@ -85,7 +85,7 @@ function FormTurno() {
     return negocios?.find(n => n.nombreNegocio == negocioNombre)
   }
 
-  const handleOnChangeNegocioSeleccionado = (negocioNombre) => {
+  const handleOnChangeNegocioSeleccionado = (e, negocioNombre) => {
     setNegocioSeleccionado(negocioNombre);
     let negocioActual = getNegocio(negocioNombre);
     let {horaDesde, horaHasta} = JSON.parse(negocioActual.diasDeAtencion);
@@ -247,7 +247,8 @@ function FormTurno() {
       <Searcher handleOnChangeSearcher={handleOnChangeSearcher}
                 negociosEncontrados={negociosEncontrados}
                 updateNegocio={handleOnChangeNegocioSeleccionado}
-                textoBusqueda={textoBusqueda} 
+                textoBusqueda={textoBusqueda}
+                negocioSeleccionado={negocioSeleccionado} 
       />
 
       {negocioSeleccionado && negociosEncontrados.length !== 0 

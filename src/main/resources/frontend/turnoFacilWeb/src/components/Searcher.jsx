@@ -1,6 +1,7 @@
 import '../styles/Searcher.css';
 
-const Searcher = ({handleOnChangeSearcher, negociosEncontrados, updateNegocio, textoBusqueda}) => {
+const Searcher = ({handleOnChangeSearcher, negociosEncontrados, updateNegocio, textoBusqueda, negocioSeleccionado}) => {
+    
     return (
         <div className="searcherContainer">
             <input 
@@ -14,9 +15,13 @@ const Searcher = ({handleOnChangeSearcher, negociosEncontrados, updateNegocio, t
             <ul className="listContainer">
               {
                 negociosEncontrados.map((n) => (
-                  <li key={n.email} className="negocioItem" onClick={() => updateNegocio(n.nombreNegocio)}>
+                  <li 
+                    key={n.email} 
+                    className={`negocioItem ${negocioSeleccionado === n.nombreNegocio ? 'active' : ''}`}
+                    onClick={(e) => updateNegocio(e, n.nombreNegocio)} 
+                    onBlur={(e) => e.classList.remove("active")}>
                     {n.nombreNegocio}
-                    <span className="spanDireccion"> {n.direccion} </span>
+                    <span id="dir" className="spanDireccion"> {n.direccion} </span>
                   </li>
                 ))
               }

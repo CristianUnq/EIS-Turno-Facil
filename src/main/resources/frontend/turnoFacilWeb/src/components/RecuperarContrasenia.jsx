@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Header from './Header';
 import styles from '../styles/login.module.css'; // Asegurate de tener este archivo
-import { useNavigate } from 'react-router-dom';
 
 function RecuperarContrasenia() {
   const [email, setEmail] = useState('');
-  const navigate = useNavigate();
 
   const handleSubmit =  async (e) => {
     e.preventDefault();
@@ -29,8 +27,6 @@ function RecuperarContrasenia() {
 
 
 return (
-
-
       <div >
       <div>
       <Header />
@@ -46,7 +42,7 @@ return (
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              autocomplete="on"
+              autoComplete="on"
               autocompletetype="email"
             />
             <button type="submit" className={styles.button}>Confirmar</button>
