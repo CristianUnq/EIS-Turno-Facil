@@ -1,6 +1,6 @@
 .header {
   background-color: #032B44;
-  width: 100%;
+  width: 95%;
   padding: 1rem 2rem;
   display: flex;
   align-items: center;
@@ -12,4 +12,9 @@
   font-weight: bold;
   font-size: 1.25rem;
   text-decoration: none;
+  cursor: pointer;
+}
+
+.cerrarSesion {
+  cursor: pointer;
 }

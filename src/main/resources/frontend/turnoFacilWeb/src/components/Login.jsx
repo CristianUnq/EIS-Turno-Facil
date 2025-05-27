@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Header from './Header';
 import styles from '../styles/login.module.css'; // Asegurate de tener este archivo
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,6 @@ function Login() {
     .then( async res => {
       if (res.ok) {
         var user= await res.json().then(object=>object);
-        console.log(user);
         
         localStorage.setItem('user', JSON.stringify(user));
         
@@ -32,7 +31,6 @@ function Login() {
       };
       throw new Error("Credenciales incorrectas");
     })
-    //.then(msg => alert("✅ " + msg))
     .catch(err => alert("❌ " + err.message));
   };
 
@@ -56,7 +54,7 @@ return (
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              autocomplete="on"
+              autoComplete="on"
               autocompletetype="email"
             />
             <input

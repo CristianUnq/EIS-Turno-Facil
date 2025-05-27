@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './Header';
 import styles from '../styles/registroNegocio.module.css';
 import { Info } from 'lucide-react';
@@ -127,8 +127,9 @@ const EditarDatosNegocio = () => {
     };
 
   return (
+    <>
+    <Header />
     <div className={styles.container}>
-          <Header />
           <div className={styles.formBox}>
           <div className={styles.avatar}> <img src="/avatar.svg" alt="Avatar" className={styles.avatar} /></div>
           <h2 className={styles.title}>Editar Datos de Negocio</h2>
@@ -192,6 +193,7 @@ const EditarDatosNegocio = () => {
             </div>
             </div>
     </div>
+    </>
   );
 };
 

@@ -22,7 +22,6 @@ const MisTurnosNegocio = () => {
   
         const data = await response.json();
         setTurnos(data);
-        console.log(data);
       } catch (error) {
         console.error("Error al traer los turnos:", error);
       } finally {

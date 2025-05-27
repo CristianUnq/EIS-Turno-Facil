@@ -1,8 +1,5 @@
-import React from 'react';
 import FormTurno from './FormTurno';
 import Header from './Header';
-
-
 
 const SeleccionarTurno = () => {
   
